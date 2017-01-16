@@ -1,6 +1,23 @@
 package org.usfirst.frc.team4139.robot;
 
-public class Robot
+public class Robot extends IterativeRobot
 {
-	//frank put your shit here and make it work thanks
+	public Joystick stick;
+	public Pwmwheels wheels;
+
+	public void robotInit()
+	{
+		stick = new Joystick(0);
+		wheels = new Pwmwheels();
+	}
+	public void teleopInit()
+	{
+	}
+	public void teleopPeriodic()
+	{
+		while (true)
+		{
+			wheels.move(Pwmwheels.FOREWARD);
+		}
+	}
 }
