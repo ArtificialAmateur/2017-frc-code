@@ -1,6 +1,8 @@
 package org.usfirst.frc.team4139.robot;
 
 import edu.wpi.first.wpilibj.*;
+import org.usfirst.frc.team4139.robot.CAN.*;
+import org.usfirst.frc.team4139.robot.PWM.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -11,6 +13,9 @@ import edu.wpi.first.wpilibj.*;
  */
 public class PiBot2017 extends IterativeRobot
 {
+	private Timer		timer;
+	private PWMWheels	pwmwheels;
+	private CANWheels	canwheels;	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
