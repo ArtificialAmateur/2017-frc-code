@@ -19,7 +19,6 @@ public class Gyroscope
 	
 	public double getangle()
 	{
-		double num = mygyro.getAngle();
-		return num;
+		return mygyro.getAngle();
 	}
 }
