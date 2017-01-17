@@ -1,23 +1,57 @@
 package org.usfirst.frc.team4139.robot;
 
+import edu.wpi.first.wpilibj.*;
+
+/**
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the IterativeRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the manifest file in the resource
+ * directory.
+ */
 public class Robot extends IterativeRobot
 {
-	public Joystick stick;
-	public Pwmwheels wheels;
-
+	/**
+	 * This function is run when the robot is first started up and should be
+	 * used for any initialization code.
+	 */
+	@Override
 	public void robotInit()
 	{
-		stick = new Joystick(0);
-		wheels = new Pwmwheels();
+		
 	}
-	public void teleopInit()
+
+	@Override
+	public void autonomousInit()
 	{
+		
 	}
+	
+	/**
+	 * This function is called periodically during autonomous
+	 */
+	@Override
+	public void autonomousPeriodic()
+	{
+
+	}
+	
+	/**
+	 * This function is called periodically during operator control
+	 */
+	@Override
 	public void teleopPeriodic()
 	{
-		while (true)
-		{
-			wheels.move(Pwmwheels.FOREWARD);
-		}
+		
+	}
+
+	/**
+	 * This function is called periodically during test mode
+	 */
+	@Override
+	public void testPeriodic()
+	{
+		
 	}
 }
+
