@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.*;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot
+public class PiBot2017 extends IterativeRobot
 {
 	/**
 	 * This function is run when the robot is first started up and should be
