@@ -38,13 +38,13 @@ public class PiBot2017 extends IterativeRobot
 	@Override
 	public void autonomousPeriodic()
 	{
-		new RobotDrive(3,2,1,0).arcadeDrive(1,0);
+		
 	}
 	
 	@Override
 	public void teleopInit()
 	{
-
+		
 	}
 
 	/**
