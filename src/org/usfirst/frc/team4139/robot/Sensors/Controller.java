@@ -6,5 +6,8 @@ public class Controller
 {
 	private XboxController controller;
 	
-	public 
+	public boolean aButtonPress()
+	{
+		return true;
+	}
 }
