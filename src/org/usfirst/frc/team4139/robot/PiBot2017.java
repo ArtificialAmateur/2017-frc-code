@@ -41,6 +41,12 @@ public class PiBot2017 extends IterativeRobot
 		new RobotDrive(3,2,1,0).arcadeDrive(1,0);
 	}
 	
+	@Override
+	public void teleopInit()
+	{
+
+	}
+
 	/**
 	 * This function is called periodically during operator control
 	 */
@@ -48,6 +54,12 @@ public class PiBot2017 extends IterativeRobot
 	public void teleopPeriodic()
 	{
 		
+	}
+
+	@Override
+	public void testInit()
+	{
+
 	}
 
 	/**
