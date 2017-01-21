@@ -38,7 +38,7 @@ public class CANClimber
 		}
 		else if(isDescending)
 		{
-			winder.set(-0.5);
+			winder.set(-0.25);
 		}
 		else
 		{
@@ -49,6 +49,6 @@ public class CANClimber
 	public void unwindToggle()
 	{
 		isDescending=!isDescending;
-		Timer.delay(0.25);
+		Timer.delay(0.5);
 	}
 }
