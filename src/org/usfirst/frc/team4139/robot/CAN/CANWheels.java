@@ -1,13 +1,18 @@
 package org.usfirst.frc.team4139.robot.CAN;
+
+import org.usfirst.frc.team4139.robot.Sensors.Gyroscope;
+import org.usfirst.frc.team4139.robot.utils.TurnDir;
+
 /*
  * This class was written by Ryan Tannenberg and Daniel Ritchie for the 2017 FIRST Robotics Competition.
  * This class contains methods to invert the motors, drive, and switch between tank and arcade drive 
  * for the teleop portion of the competition. It also contains methods to drive a certain distance and
  * turn to a certain degree for the automated section of the competition.
  */
-import com.ctre.*;
-import org.usfirst.frc.team4139.robot.Sensors.*;
-import edu.wpi.first.wpilibj.*;
+import com.ctre.CANTalon;
+
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotDrive;
 
 
 public class CANWheels
@@ -23,8 +28,11 @@ public class CANWheels
 	private int driveMode;
 	public static final int TANK_DRIVE = 1;
 	public static final int ARCADE_DRIVE = 2;
-	public static final int RIGHT = 10;
-	public static final int LEFT = 11;
+	
+	private double feetStep;
+	private double degreeStep;
+	private double nextFeet;
+	private double nextDegree;
 	
 	private Encoder encoder;
 	private Gyroscope gyro;
@@ -41,56 +49,65 @@ public class CANWheels
 		//'3' is just a placeholder. We need to calculate the circumference of the wheels in order
 		//to gauge the distance that each revolution takes. Please use feet as a unit.
 		encoder.setDistancePerPulse(3);
+		feetStep = 0.0;
+		degreeStep = 0.0;
+		nextFeet = 0.0;
+		nextDegree = 0.0;
 	}
 	
 	//This class tells the robot to drive a certain distance in feet, at a speed of 0.3
-	public void driveDist(double feet)
-	{
-		double feetStep = 0.0; 
-		
-		while(feetStep<=feet)
+	public boolean driveDist(double feet)
+	{ 	
+		if(feetStep == 0.0)
+			nextFeet = feet;
+		else if(feetStep != nextFeet)
 		{
-			switch(driveMode){
-			case TANK_DRIVE:
-				this.drive(0.3,0.3);
-				break;
-			case ARCADE_DRIVE:
-				this.drive(0.3, 0.3);
-				break;
-			default:
-				this.drive(0, 0);
-			}
+			this.switchToArcade();
+			this.drive(-0.3, 0.0);
 			feetStep = encoder.getDistance();
 		}
-		encoder.reset();
+		else if(feetStep == nextFeet)
+		{
+			feetStep = 0.0;
+			nextFeet = 0.0;
+			encoder.reset();
+			return true;
+		}
+		return false;
 	}
 	//this class tells the robot to turn in a certain direction until it is a certain degree from its initial direction.
-	public void turn(double degrees, int turnDir)
+	
+	public boolean turn(double degrees, TurnDir turnDir)
 	{
-		double degreeStep = 0.0;
-		boolean isTank = false;
-		if(driveMode==TANK_DRIVE)
+		if(degreeStep == 0.0)
 		{
-			isTank = true;
-			driveMode = ARCADE_DRIVE;
+			nextDegree = degrees;
 		}
-		while(degreeStep<degrees)
+		else if(degreeStep != nextDegree)
 		{
-			switch(turnDir){
-			case LEFT:
-				this.drive(0.0,-0.3);
+			this.switchToArcade();
+			switch(turnDir)
+			{
+			case left:
+				this.drive(0.0, -0.3);
 				break;
-			case RIGHT:
-				this.drive(0.0,0.3);
+			case right:
+				this.drive(0.0, 0.3);
 				break;
 			default:
-				this.drive(0.0,0.0);
+				this.drive(0.0, 0.0);
+				break;
 			}
-			degreeStep = gyro.getAngle();
+			feetStep = gyro.getAngle();
 		}
-		gyro.reset();
-		if(isTank)
-			driveMode = TANK_DRIVE;
+		else if(degreeStep == nextDegree)
+		{
+			degreeStep = 0.0;
+			nextDegree = 0.0;
+			gyro.reset();
+			return true;
+		}
+		return false;
 	}
 	
 	//switches to TankDrive
