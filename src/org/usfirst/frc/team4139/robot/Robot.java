@@ -14,7 +14,9 @@ import org.usfirst.frc.team4139.robot.Sensors.*;
  */
 public class Robot extends IterativeRobot
 {
+	private PWMWheels wheels;
     private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+    private RobotDrive robot;
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -22,7 +24,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit()
 	{
-		
+		robot = new RobotDrive(0,1,2,12);
 	}
 
 	@Override
@@ -42,6 +44,8 @@ public class Robot extends IterativeRobot
 		@Override
 	public void teleopInit()
 	{
+			
+			gyro = new ADXRS450_Gyro();
 			gyro.reset();
 	}
 
@@ -51,7 +55,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic()
 	{
-		System.out.println("Gyro: " + gyro.getAngle());
+			robot.arcadeDrive(-1.0, -1.0);
 	}
 
 	@Override

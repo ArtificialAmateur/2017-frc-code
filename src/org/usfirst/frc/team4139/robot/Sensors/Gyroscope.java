@@ -5,20 +5,20 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class Gyroscope
 {
-	private Gyro mygyro;
+	private Gyro myGyro; 
 
 	public Gyroscope()
 	{
-		mygyro = new AnalogGyro(1);
+		myGyro = new AnalogGyro(1);
 	}
 	
 	public void reset()
 	{
-		mygyro.reset();
+		myGyro.reset();
 	}
 	
 	public double getAngle()
 	{
-		return mygyro.getAngle();
+		return myGyro.getAngle();
 	}
 }
