@@ -5,14 +5,13 @@ import edu.wpi.first.wpilibj.*;
 public class Gyroscope
 {
 	private ADXRS450_Gyro gyro;
-	private double angle, constant;
-	public double 
+	private double angle;
+	public static final double CONSTANT = 0.03;
 
 	public Gyroscope()
 	{
 		gyro = new ADXRS450_Gyro();
 		angle = gyro.getAngle();
-		constant = 0.03;
 	}
 	
 	//Initializes gyroscope by reseting angle.
@@ -31,11 +30,5 @@ public class Gyroscope
 	public void printGyroAngle()
 	{
 		System.out.println("Gyro: "+angle);
-	}
-	
-	//Returns the constant used to correct robot angle.
-	public double getGyroConstant()
-	{
-		return constant;
 	}
 }

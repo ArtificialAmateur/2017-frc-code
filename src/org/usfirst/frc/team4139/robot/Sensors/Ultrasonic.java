@@ -2,8 +2,6 @@ package org.usfirst.frc.team4139.robot.Sensors;
 
 import edu.wpi.first.wpilibj.*;
 
-// Distance = voltage*scale factor
-
 public class Ultrasonic
 {
 	private AnalogInput sonic;
@@ -20,25 +18,25 @@ public class Ultrasonic
 	// Returns the ultrasonic range in inches.
 	public double getSonicDist()
 	{
+		printSonicDist();
 		currentDist = sonic.getValue() * INCH_CONVERT;
 		return currentDist;
 	}
 	
 	public void printSonicDist()
 	{
-		currentDist = sonic.getValue() * INCH_CONVERT;
-		System.out.println("Ultrasonic: "+currentDist+"in.");
+		System.out.println("Ultrasonic: "+getSonicDist()+"in.");
 	}
 	
 	public double getSonicSpeed()
 	{
-		currentSpeed = (HOLD_DISTANCE - currentDist) * CONSTANT;
+		printSonicSpeed();
+		currentSpeed = (HOLD_DISTANCE - getSonicDist()) * CONSTANT;
 		return currentSpeed;
 	}
 	
 	public void printSonicSpeed()
-	{
-		currentSpeed = (HOLD_DISTANCE - currentDist) * CONSTANT;
-		System.out.println("Sonic speed: "+currentSpeed);
+	{	
+		System.out.println("Ultrasonic: "+getSonicDist()+"in/s");
 	}
 }
