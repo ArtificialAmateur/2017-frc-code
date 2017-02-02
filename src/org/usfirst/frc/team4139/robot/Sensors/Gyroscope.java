@@ -1,24 +1,36 @@
 package org.usfirst.frc.team4139.robot.Sensors;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.*;
 
 public class Gyroscope
 {
-	private Gyro myGyro; 
+	private ADXRS450_Gyro gyro;
+	private double angle, constant;
 
 	public Gyroscope()
 	{
-		myGyro = new AnalogGyro(1);
+		gyro = new ADXRS450_Gyro();
+		angle = gyro.getAngle();
+		constant = 0.03;
 	}
 	
-	public void reset()
+	public void gyroReset()
 	{
-		myGyro.reset();
+		gyro.reset();
 	}
 	
-	public double getAngle()
+	public double getGyroAngle()
 	{
-		return myGyro.getAngle();
+		return angle;
+	}
+	
+	public void printGyroAngle()
+	{
+		System.out.println("Gyro: "+angle);
+	}
+	
+	public double getGyroConstant()
+	{
+		return constant;
 	}
 }

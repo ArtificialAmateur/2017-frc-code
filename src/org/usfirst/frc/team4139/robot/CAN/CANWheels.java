@@ -45,7 +45,7 @@ public class CANWheels
 		encoder = new Encoder(0,1);
 		
 		gyro = new Gyroscope();
-		gyro.reset();
+		gyro.gyroReset();
 		//'3' is just a placeholder. We need to calculate the circumference of the wheels in order
 		//to gauge the distance that each revolution takes. Please use feet as a unit.
 		encoder.setDistancePerPulse(3);
@@ -98,13 +98,13 @@ public class CANWheels
 				this.drive(0.0, 0.0);
 				break;
 			}
-			feetStep = gyro.getAngle();
+			feetStep = gyro.getGyroAngle();
 		}
 		else if(degreeStep == nextDegree)
 		{
 			degreeStep = 0.0;
 			nextDegree = 0.0;
-			gyro.reset();
+			gyro.gyroReset();
 			return true;
 		}
 		return false;

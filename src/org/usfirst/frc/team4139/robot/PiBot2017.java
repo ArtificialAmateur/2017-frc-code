@@ -3,7 +3,6 @@ package org.usfirst.frc.team4139.robot;
 import edu.wpi.first.wpilibj.*;
 import org.usfirst.frc.team4139.robot.CAN.*;
 import org.usfirst.frc.team4139.robot.PWM.*;
-import org.usfirst.frc.team4139.robot.Sensors.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -12,11 +11,11 @@ import org.usfirst.frc.team4139.robot.Sensors.*;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot
+public class PiBot2017 extends IterativeRobot
 {
-	private PWMWheels wheels;
-    private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-    private RobotDrive robot;
+	private Timer		timer;
+	private PWMWheels	pwmwheels;
+	private CANWheels	canwheels;	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -24,7 +23,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit()
 	{
-		robot = new RobotDrive(0,1,2,12);
+		
 	}
 
 	@Override
@@ -41,12 +40,11 @@ public class Robot extends IterativeRobot
 	{
 		
 	}
-		@Override
+	
+	@Override
 	public void teleopInit()
 	{
-			
-			gyro = new ADXRS450_Gyro();
-			gyro.reset();
+		
 	}
 
 	/**
@@ -55,7 +53,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic()
 	{
-			robot.arcadeDrive(-1.0, -1.0);
+		
 	}
 
 	@Override
