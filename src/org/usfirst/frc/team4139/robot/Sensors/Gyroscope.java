@@ -6,6 +6,7 @@ public class Gyroscope
 {
 	private ADXRS450_Gyro gyro;
 	private double angle, constant;
+	public double 
 
 	public Gyroscope()
 	{
@@ -14,21 +15,25 @@ public class Gyroscope
 		constant = 0.03;
 	}
 	
-	public void gyroReset()
+	//Initializes gyroscope by reseting angle.
+	public void gyroInit()
 	{
 		gyro.reset();
 	}
 	
+	//Returns the current angle of the robot.
 	public double getGyroAngle()
 	{
 		return angle;
 	}
 	
+	//Prints the current angle of the robot in the console.
 	public void printGyroAngle()
 	{
 		System.out.println("Gyro: "+angle);
 	}
 	
+	//Returns the constant used to correct robot angle.
 	public double getGyroConstant()
 	{
 		return constant;

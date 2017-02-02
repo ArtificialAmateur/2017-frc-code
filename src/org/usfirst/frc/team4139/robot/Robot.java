@@ -3,6 +3,7 @@ package org.usfirst.frc.team4139.robot;
 import edu.wpi.first.wpilibj.*;
 import org.usfirst.frc.team4139.robot.CAN.*;
 import org.usfirst.frc.team4139.robot.PWM.*;
+import org.usfirst.frc.team4139.robot.Sensors.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -13,9 +14,8 @@ import org.usfirst.frc.team4139.robot.PWM.*;
  */
 public class Robot extends IterativeRobot
 {
-	private Timer		timer;
-	private PWMWheels	pwmwheels;
-	private CANWheels	canwheels;	
+	// Initialize variables here
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
