@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4139.robot.CAN;
 
-import org.usfirst.frc.team4139.robot.Sensors.Gyroscope;
-import org.usfirst.frc.team4139.robot.utils.TurnDir;
+import org.usfirst.frc.team4139.robot.Utils.*;
 
 /*
  * This class was written by Ryan Tannenberg and Daniel Ritchie for the 2017 FIRST Robotics Competition.

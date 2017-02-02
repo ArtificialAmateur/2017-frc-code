@@ -11,7 +11,7 @@ import org.usfirst.frc.team4139.robot.PWM.*;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class PiBot2017 extends IterativeRobot
+public class Robot extends IterativeRobot
 {
 	private Timer		timer;
 	private PWMWheels	pwmwheels;
