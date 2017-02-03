@@ -5,8 +5,6 @@ import edu.wpi.first.wpilibj.XboxController;
 public class Controller
 {
 	private XboxController xbox;
-	public static final int LEFT_BUMPER = 5;
-	public static final int RIGHT_BUMPER = 6;
 	public static final int LEFT_STICK = 1; //Im not sure the stick ints are right
 	public static final int RIGHT_STICK = 5;
 	
@@ -71,4 +69,5 @@ public class Controller
 		System.out.println("Controller RS: "+xbox.getRawAxis(RIGHT_STICK));
 		return xbox.getRawAxis(RIGHT_STICK);
 	}
+	
 }
