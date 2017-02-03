@@ -17,31 +17,58 @@ public class Controller
 	
 	public boolean getButtonA()
 	{
-		System.out.println("Controller: A");
+		if(xbox.getAButton())
+			System.out.println("Controller: A");
+		else
+			System.out.println("Controller: NO INPUT");
 		return xbox.getAButton();
 	}
 	
 	public boolean getButtonB()
 	{
-		System.out.println("Controller: B");
+		if(xbox.getBButton())
+			System.out.println("Controller: B");
+		else
+			System.out.println("Controller: NO INPUT");
 		return xbox.getBButton();
 	}
 	
 	public boolean getButtonX()
 	{
-		System.out.println("Controller: X");
+		if(xbox.getXButton())
+			System.out.println("Controller: X");
+		else
+			System.out.println("Controller: NO INPUT");
 		return xbox.getXButton();
 	}
 	
 	public boolean getButtonY()
 	{
-		System.out.println("Controller: Y");
+		if(xbox.getYButton())
+			System.out.println("Controller: Y");
+		else
+			System.out.println("Controller: NO INPUT");
 		return xbox.getYButton();
 	}
 	
 	public boolean getButtonStart()
 	{
-		System.out.println("Controller: Start");
+		if(xbox.getStartButton())
+			System.out.println("Controller: Start");
+		else
+			System.out.println("Controller: NO INPUT");
 		return xbox.getStartButton();
+	}
+	
+	public double getStickLeft()
+	{
+		System.out.println("Controller LS: "+xbox.getRawAxis(LEFT_STICK));
+		return xbox.getRawAxis(LEFT_STICK);
+	}
+	
+	public double getStickRight()
+	{
+		System.out.println("Controller RS: "+xbox.getRawAxis(RIGHT_STICK));
+		return xbox.getRawAxis(RIGHT_STICK);
 	}
 }
