@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4139.robot.CAN;
 
-import org.usfirst.frc.team4139.robot.Utils.*;
+import org.usfirst.frc.team4139.robot.Sensors.Gyroscope;
+import org.usfirst.frc.team4139.robot.Utils.TurnDir;
+
+import com.ctre.CANTalon;
 
 /*
  * This class was written by Ryan Tannenberg and Daniel Ritchie for the 2017 FIRST Robotics Competition.
@@ -8,7 +11,6 @@ import org.usfirst.frc.team4139.robot.Utils.*;
  * for the teleop portion of the competition. It also contains methods to drive a certain distance and
  * turn to a certain degree for the automated section of the competition.
  */
-import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -17,10 +19,10 @@ import edu.wpi.first.wpilibj.RobotDrive;
 public class CANWheels
 {
 	//NOTE: The ID's for the TalonSRXs must be configured manually on the roboRIO
-	private CANTalon fLMotor = new CANTalon(0);
-	private CANTalon rLMotor = new CANTalon(1);
-	private CANTalon fRMotor = new CANTalon(2);
-	private CANTalon rRMotor = new CANTalon(3);
+	private CANTalon fLMotor;
+	private CANTalon rLMotor;
+	private CANTalon fRMotor;
+	private CANTalon rRMotor;
 	
 	private RobotDrive robot;
 	
@@ -36,11 +38,8 @@ public class CANWheels
 	private Encoder encoder;
 	private Gyroscope gyro;
 
-	public CANWheels()
+	public CANWheels(int idFL, int idRL, int idFR, int idRR)
 	{
-		robot = new RobotDrive(fLMotor,rLMotor,fRMotor,rRMotor);
-		driveMode = TANK_DRIVE;
-		
 		encoder = new Encoder(0,1);
 		
 		gyro = new Gyroscope();
@@ -52,6 +51,12 @@ public class CANWheels
 		degreeStep = 0.0;
 		nextFeet = 0.0;
 		nextDegree = 0.0;
+		fLMotor = new CANTalon(idFL);
+		rLMotor = new CANTalon(idRL);
+		fRMotor = new CANTalon(idFR);
+		rRMotor = new CANTalon(idRR);
+		robot = new RobotDrive(fLMotor,rLMotor,fRMotor,rRMotor);
+		driveMode = TANK_DRIVE;
 	}
 	
 	//This class tells the robot to drive a certain distance in feet, at a speed of 0.3
