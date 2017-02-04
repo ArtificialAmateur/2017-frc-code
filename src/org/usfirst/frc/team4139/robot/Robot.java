@@ -15,6 +15,8 @@ import org.usfirst.frc.team4139.robot.Sensors.*;
 public class Robot extends IterativeRobot
 {
 	// Initialize variables here
+	private Controller xbox;
+	private CANWheels wheels;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -23,8 +25,8 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit()
 	{
-		
-	}
+		wheels = new CANWheels();
+		xbox = new Controller();	}
 
 	@Override
 	public void autonomousInit()
