@@ -14,6 +14,7 @@ import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 
 
 public class CANWheels
@@ -37,16 +38,17 @@ public class CANWheels
 	
 	private Encoder encoder;
 	private Gyroscope gyro;
+	private Timer timer;
 
 	public CANWheels(int idFL, int idRL, int idFR, int idRR)
 	{
-		encoder = new Encoder(0,1);
+		//encoder = new Encoder(0,1);
 		
 		gyro = new Gyroscope();
 		gyro.gyroReset();
 		//'3' is just a placeholder. We need to calculate the circumference of the wheels in order
 		//to gauge the distance that each revolution takes. Please use feet as a unit.
-		encoder.setDistancePerPulse(3);
+		//encoder.setDistancePerPulse(3);
 		feetStep = 0.0;
 		degreeStep = 0.0;
 		nextFeet = 0.0;
@@ -57,30 +59,46 @@ public class CANWheels
 		rRMotor = new CANTalon(idRR);
 		robot = new RobotDrive(fLMotor,rLMotor,fRMotor,rRMotor);
 		driveMode = TANK_DRIVE;
+		timer = new Timer();
+		timer.reset();
 	}
 	
 	//This class tells the robot to drive a certain distance in feet, at a speed of 0.3
+	//This class needs to be changed to work with the encoder when the encoder is put on the robot.
 	public boolean driveDist(double feet)
 	{ 	
+		if(timer.get() == 0){
+			timer.start();
+		}
+		else if (timer.get() > feet){
+			timer.reset();
+			return true;
+		}
+		this.drive(1, 0);
+		return false;
+		/*
 		if(feetStep == 0.0)
+		{
 			nextFeet = feet;
+			timer.start();
+		}
 		else if(feetStep != nextFeet)
 		{
 			this.switchToArcade();
 			this.drive(-0.3, 0.0);
-			feetStep = encoder.getDistance();
+			feetStep = timer.get();
 		}
 		else if(feetStep == nextFeet)
 		{
 			feetStep = 0.0;
 			nextFeet = 0.0;
-			encoder.reset();
+			timer.reset();
 			return true;
 		}
-		return false;
+		return false;*/
 	}
-	//this class tells the robot to turn in a certain direction until it is a certain degree from its initial direction.
 	
+	//this class tells the robot to turn in a certain direction until it is a certain degree from its initial direction.
 	public boolean turn(double degrees, TurnDir turnDir)
 	{
 		if(degreeStep == 0.0)
@@ -131,12 +149,13 @@ public class CANWheels
 	{
 		switch(driveMode){
 		case TANK_DRIVE:
-			robot.tankDrive(lS, rS);
+			robot.tankDrive(-lS, -rS);
 			break;
 		case ARCADE_DRIVE:
-			robot.arcadeDrive(lS, rS);
+			robot.arcadeDrive(-lS, -rS);
+			break;
 		default:
-			robot.tankDrive(lS, rS);
+			robot.tankDrive(-lS, -rS);
 		}
 	}
 	

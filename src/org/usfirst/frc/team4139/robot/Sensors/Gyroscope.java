@@ -15,7 +15,7 @@ public class Gyroscope
 	}
 	
 	//Initializes gyroscope by reseting angle.
-	public void gyroInit()
+	public void gyroReset()
 	{
 		gyro.reset();
 	}
