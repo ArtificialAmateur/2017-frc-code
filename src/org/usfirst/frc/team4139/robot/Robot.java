@@ -24,10 +24,13 @@ public class Robot extends IterativeRobot
 	private Stack<Instruction> instructions;
 	// Initialize variables here
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private CANWheels wheels;
 	private Controller stick;
 	private Instruction currentInstruction;
 =======
+=======
+>>>>>>> 0d8430bfbebd79543991e55099669ae84d0ab548
 	private Controller xbox;
 	private CANWheels wheels;
 	
