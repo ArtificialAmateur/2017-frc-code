@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4139.robot;
 
 import java.util.Stack;
-
 import org.usfirst.frc.team4139.robot.CAN.CANWheels;
 import org.usfirst.frc.team4139.robot.Sensors.Controller;
 import org.usfirst.frc.team4139.robot.Utils.DriveInstruction;
@@ -23,18 +22,11 @@ public class Robot extends IterativeRobot
 {
 	private Stack<Instruction> instructions;
 	// Initialize variables here
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 	private CANWheels wheels;
 	private Controller stick;
 	private Instruction currentInstruction;
-=======
-=======
->>>>>>> 0d8430bfbebd79543991e55099669ae84d0ab548
-	private Controller xbox;
-	private CANWheels wheels;
 	
->>>>>>> 8ff5addd226547576b7e93f54c0258dd32ea13f9
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -42,8 +34,8 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit()
 	{
-		wheels = new CANWheels();
-		xbox = new Controller();	}
+		
+	}
 
 	@Override
 	public void autonomousInit()
