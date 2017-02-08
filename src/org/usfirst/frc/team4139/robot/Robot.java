@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4139.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import java.util.Stack;
 import org.usfirst.frc.team4139.robot.CAN.*;
 import org.usfirst.frc.team4139.robot.Sensors.*;
@@ -43,12 +44,11 @@ public class Robot extends IterativeRobot
 		
 		instructions = new Stack<Instruction>();
 		instructions.push(new DriveInstruction(wheels, 2));
-		/*instructions.push(new TurnInstruction(wheels, -90, TurnDir.right));
-		instructions.push(new DriveInstruction(wheels, 2));
 		instructions.push(new TurnInstruction(wheels, -90, TurnDir.right));
 		instructions.push(new DriveInstruction(wheels, 2));
 		instructions.push(new TurnInstruction(wheels, -90, TurnDir.right));
-		instructions.push(new DriveInstruction(wheels, 2));*/
+		instructions.push(new DriveInstruction(wheels, 2));
+		instructions.push(new DriveInstruction(wheels, 2));
 	}
 	
 	/**
