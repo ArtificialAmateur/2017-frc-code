@@ -3,6 +3,8 @@
 
 package org.usfirst.frc.team4139.robot.CAN;
 
+import com.ctre.*;
+
 import edu.wpi.first.wpilibj.AnalogOutput;
 
 public class CANDumper
@@ -58,7 +60,7 @@ public class CANDumper
 	}
 	
 	//should be called with every call to teleopPeriodic() in the Robot.java class
-	public boolean update()
+	public void update()
 	{
 		if (upSwitch.getVoltage() > 0.1 || upSwitch.getVoltage() < -0.1)
 		{

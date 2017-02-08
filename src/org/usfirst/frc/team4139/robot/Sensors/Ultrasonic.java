@@ -10,7 +10,7 @@ public class Ultrasonic
 	
 	public Ultrasonic()
 	{
-		sonic    = new AnalogInput(1); //Input		
+		sonic    = new AnalogInput(2); //Input		
 	}
 	
 	// Returns the ultrasonic range in inches.
