@@ -48,7 +48,6 @@ public class Robot extends IterativeRobot
 		instructions.push(new DriveInstruction(wheels, 2));
 		instructions.push(new TurnInstruction(wheels, -90, TurnDir.right));
 		instructions.push(new DriveInstruction(wheels, 2));
-		instructions.push(new DriveInstruction(wheels, 2));
 	}
 	
 	/**
