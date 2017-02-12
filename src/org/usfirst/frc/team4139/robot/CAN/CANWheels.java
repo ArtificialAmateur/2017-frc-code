@@ -62,25 +62,28 @@ public class CANWheels
 		if(timer.get() == 0){
 			timer.start();
 		}
+		
 		double angle = gyro.getGyroAngle();
 		double constant = gyro.getGyroConstant();
+		
 		System.out.println(timer.get());
+		
 		if(timer.get() < 3){
 			this.drive(-.5, -angle*constant);
 			System.out.println("Driving");
 			return false;
 		}
-		else if (timer.get() > feet){
+		else {
 			timer.reset();
 			return true;
 		}
-		return false;
 	}
 	
 	//this class tells the robot to turn in a certain direction until it is a certain degree from its initial direction.
 	public boolean turn(double degrees, TurnDir turnDir)
 	{
 		this.switchToArcade();
+		
 		if(Math.abs(gyro.getGyroAngle()) < Math.abs(degrees)){
 			System.out.println("Turning");		
 			System.out.println(gyro.getGyroAngle());
