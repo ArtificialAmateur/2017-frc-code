@@ -74,7 +74,9 @@ public class CANWheels
 			timer.reset();
 			return true;
 		}
-		this.drive(1, 0);
+		double angle = gyro.getGyroAngle();
+		double constant = gyro.getGyroConstant();
+		this.drive(-1, -angle*constant);
 		return false;
 		/*
 		if(feetStep == 0.0)

@@ -7,6 +7,9 @@ import org.usfirst.frc.team4139.robot.CAN.*;
 import org.usfirst.frc.team4139.robot.Sensors.*;
 import org.usfirst.frc.team4139.robot.Utils.*;
 
+//Testing accessing the camera feed.
+import edu.wpi.first.wpilibj.CameraServer;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -31,7 +34,8 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit()
 	{
-		
+		//More camera testing stuff
+		CameraServer.getInstance().startAutomaticCapture();
 	}
 
 	@Override
