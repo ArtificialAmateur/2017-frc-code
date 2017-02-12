@@ -52,7 +52,6 @@ public class Robot extends IterativeRobot
 		
 		currentInstruction = new NoInstruction();
 		
-<<<<<<< HEAD
 		instructions = new LinkedList<Instruction>();
 		//instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
 		instructions.add(new DriveInstruction(wheels, 1));
@@ -65,20 +64,6 @@ public class Robot extends IterativeRobot
 		
 		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
 		instructions.add(new DriveInstruction(wheels, 1));
-		
-		//instructions.add(new TurnInstruction(wheels, 90, TurnDir.right));
-		
-		/*instructions.add(new DriveInstruction(wheels, 2));
-		instructions.add(new TurnInstruction(wheels, -90, TurnDir.right));
-		instructions.add(new DriveInstruction(wheels, 2));*/
-=======
-		instructions = new Stack<Instruction>();
-		instructions.push(new DriveInstruction(wheels, 2));
-		instructions.push(new TurnInstruction(wheels, -90, TurnDir.right));
-		instructions.push(new DriveInstruction(wheels, 2));
-		instructions.push(new TurnInstruction(wheels, -90, TurnDir.right));
-		instructions.push(new DriveInstruction(wheels, 2));
->>>>>>> 420beb57aaf1a9d0d4613a598f95cdee10e7c956
 	}
 	
 	/**

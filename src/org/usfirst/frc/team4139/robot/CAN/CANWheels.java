@@ -31,11 +31,6 @@ public class CANWheels
 	public static final int TANK_DRIVE = 1;
 	public static final int ARCADE_DRIVE = 2;
 	
-	private double feetStep;
-	private double degreeStep;
-	private double nextFeet;
-	private double nextDegree;
-	
 	private Encoder encoder;
 	private Gyroscope gyro;
 	private Timer timer;
@@ -49,10 +44,6 @@ public class CANWheels
 		//'3' is just a placeholder. We need to calculate the circumference of the wheels in order
 		//to gauge the distance that each revolution takes. Please use feet as a unit.
 		//encoder.setDistancePerPulse(3);
-		feetStep = 0.0;
-		degreeStep = 0.0;
-		nextFeet = 0.0;
-		nextDegree = 0.0;
 		fLMotor = new CANTalon(idFL);
 		rLMotor = new CANTalon(idRL);
 		fRMotor = new CANTalon(idFR);
@@ -71,40 +62,19 @@ public class CANWheels
 		if(timer.get() == 0){
 			timer.start();
 		}
-<<<<<<< HEAD
-		
+		double angle = gyro.getGyroAngle();
+		double constant = gyro.getGyroConstant();
 		System.out.println(timer.get());
 		if(timer.get() < 3){
-			this.drive(-.5, 0);
+			this.drive(-.5, -angle*constant);
 			System.out.println("Driving");
 			return false;
-=======
+		}
 		else if (timer.get() > feet){
 			timer.reset();
 			return true;
 		}
-		double angle = gyro.getGyroAngle();
-		double constant = gyro.getGyroConstant();
-		this.drive(-1, -angle*constant);
 		return false;
-		/*
-		if(feetStep == 0.0)
-		{
-			nextFeet = feet;
-			timer.start();
-		}
-		else if(feetStep != nextFeet)
-		{
-			this.switchToArcade();
-			this.drive(-0.3, 0.0);
-			feetStep = timer.get();
->>>>>>> 420beb57aaf1a9d0d4613a598f95cdee10e7c956
-		}
-		else {
-			timer.reset();
-			gyro.gyroReset();
-			return true;
-		}
 	}
 	
 	//this class tells the robot to turn in a certain direction until it is a certain degree from its initial direction.
