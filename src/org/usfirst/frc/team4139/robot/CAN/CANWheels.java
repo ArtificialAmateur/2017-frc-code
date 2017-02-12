@@ -67,69 +67,46 @@ public class CANWheels
 	//This class needs to be changed to work with the encoder when the encoder is put on the robot.
 	public boolean driveDist(double feet)
 	{ 	
+		this.switchToArcade();
 		if(timer.get() == 0){
 			timer.start();
 		}
-		else if (timer.get() > feet){
+		
+		System.out.println(timer.get());
+		if(timer.get() < 3){
+			this.drive(-.5, 0);
+			System.out.println("Driving");
+			return false;
+		}
+		else {
 			timer.reset();
+			gyro.gyroReset();
 			return true;
 		}
-		this.drive(1, 0);
-		return false;
-		/*
-		if(feetStep == 0.0)
-		{
-			nextFeet = feet;
-			timer.start();
-		}
-		else if(feetStep != nextFeet)
-		{
-			this.switchToArcade();
-			this.drive(-0.3, 0.0);
-			feetStep = timer.get();
-		}
-		else if(feetStep == nextFeet)
-		{
-			feetStep = 0.0;
-			nextFeet = 0.0;
-			timer.reset();
-			return true;
-		}
-		return false;*/
 	}
 	
 	//this class tells the robot to turn in a certain direction until it is a certain degree from its initial direction.
 	public boolean turn(double degrees, TurnDir turnDir)
 	{
-		if(degreeStep == 0.0)
-		{
-			nextDegree = degrees;
-		}
-		else if(degreeStep != nextDegree)
-		{
-			this.switchToArcade();
-			switch(turnDir)
-			{
+		this.switchToArcade();
+		if(Math.abs(gyro.getGyroAngle()) < Math.abs(degrees)){
+			System.out.println("Turning");		
+			System.out.println(gyro.getGyroAngle());
+			
+			switch(turnDir){
 			case left:
-				this.drive(0.0, -0.3);
+				this.drive(0,-.7);
 				break;
 			case right:
-				this.drive(0.0, 0.3);
+				this.drive(0, .7);
 				break;
-			default:
-				this.drive(0.0, 0.0);
-				break;
-			}
-			feetStep = gyro.getGyroAngle();
+			}	
+			return false;
 		}
-		else if(degreeStep == nextDegree)
-		{
-			degreeStep = 0.0;
-			nextDegree = 0.0;
+		else {
 			gyro.gyroReset();
 			return true;
 		}
-		return false;
 	}
 	
 	//switches to TankDrive

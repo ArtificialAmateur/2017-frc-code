@@ -1,11 +1,17 @@
 package org.usfirst.frc.team4139.robot;
 
+import java.util.LinkedList;
+
+import org.usfirst.frc.team4139.robot.CAN.CANWheels;
+import org.usfirst.frc.team4139.robot.Sensors.Controller;
+import org.usfirst.frc.team4139.robot.Sensors.Ultrasonic;
+import org.usfirst.frc.team4139.robot.Utils.DriveInstruction;
+import org.usfirst.frc.team4139.robot.Utils.Instruction;
+import org.usfirst.frc.team4139.robot.Utils.NoInstruction;
+import org.usfirst.frc.team4139.robot.Utils.TurnDir;
+import org.usfirst.frc.team4139.robot.Utils.TurnInstruction;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Timer;
-import java.util.Stack;
-import org.usfirst.frc.team4139.robot.CAN.*;
-import org.usfirst.frc.team4139.robot.Sensors.*;
-import org.usfirst.frc.team4139.robot.Utils.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -16,7 +22,7 @@ import org.usfirst.frc.team4139.robot.Utils.*;
  */
 public class Robot extends IterativeRobot
 {
-	private Stack<Instruction> instructions;
+	private LinkedList<Instruction> instructions;
 	// Initialize variables here
 
 	private CANWheels wheels;
@@ -42,23 +48,40 @@ public class Robot extends IterativeRobot
 		
 		currentInstruction = new NoInstruction();
 		
-		instructions = new Stack<Instruction>();
-		instructions.push(new DriveInstruction(wheels, 2));
-		instructions.push(new TurnInstruction(wheels, -90, TurnDir.right));
-		instructions.push(new DriveInstruction(wheels, 2));
-		instructions.push(new TurnInstruction(wheels, -90, TurnDir.right));
-		instructions.push(new DriveInstruction(wheels, 2));
-		instructions.push(new DriveInstruction(wheels, 2));
+		instructions = new LinkedList<Instruction>();
+		//instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
+		instructions.add(new DriveInstruction(wheels, 1));
+		
+		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
+		instructions.add(new DriveInstruction(wheels, 1));
+		
+		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
+		instructions.add(new DriveInstruction(wheels, 1));
+		
+		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
+		instructions.add(new DriveInstruction(wheels, 1));
+		
+		//instructions.add(new TurnInstruction(wheels, 90, TurnDir.right));
+		
+		/*instructions.add(new DriveInstruction(wheels, 2));
+		instructions.add(new TurnInstruction(wheels, -90, TurnDir.right));
+		instructions.add(new DriveInstruction(wheels, 2));*/
 	}
 	
 	/**
 	 * This function is called periodically during autonomous
 	 */
 	@Override
-	public void autonomousPeriodic()
-	{
-		if(currentInstruction != null && currentInstruction.execute()){
-			currentInstruction = instructions.pop();
+	public synchronized void autonomousPeriodic()
+	{		
+		//first time will always return true
+		if(currentInstruction.execute()){
+			if(instructions.isEmpty()){
+				currentInstruction = new NoInstruction();
+			}
+			else if(!instructions.isEmpty()){
+				currentInstruction = instructions.pop();
+			}
 		}
 	}
 	
@@ -77,6 +100,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic()
 	{
+		wheels.switchToArcade();
 		wheels.drive(stick.getStickLeft(), stick.getStickRight());
 	}
 
