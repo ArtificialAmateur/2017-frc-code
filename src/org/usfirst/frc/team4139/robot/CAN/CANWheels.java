@@ -71,12 +71,34 @@ public class CANWheels
 		if(timer.get() == 0){
 			timer.start();
 		}
+<<<<<<< HEAD
 		
 		System.out.println(timer.get());
 		if(timer.get() < 3){
 			this.drive(-.5, 0);
 			System.out.println("Driving");
 			return false;
+=======
+		else if (timer.get() > feet){
+			timer.reset();
+			return true;
+		}
+		double angle = gyro.getGyroAngle();
+		double constant = gyro.getGyroConstant();
+		this.drive(-1, -angle*constant);
+		return false;
+		/*
+		if(feetStep == 0.0)
+		{
+			nextFeet = feet;
+			timer.start();
+		}
+		else if(feetStep != nextFeet)
+		{
+			this.switchToArcade();
+			this.drive(-0.3, 0.0);
+			feetStep = timer.get();
+>>>>>>> 420beb57aaf1a9d0d4613a598f95cdee10e7c956
 		}
 		else {
 			timer.reset();

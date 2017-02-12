@@ -13,6 +13,9 @@ import org.usfirst.frc.team4139.robot.Utils.TurnInstruction;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
+//Testing accessing the camera feed.
+import edu.wpi.first.wpilibj.CameraServer;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -37,7 +40,8 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit()
 	{
-		
+		//More camera testing stuff
+		CameraServer.getInstance().startAutomaticCapture();
 	}
 
 	@Override
@@ -48,6 +52,7 @@ public class Robot extends IterativeRobot
 		
 		currentInstruction = new NoInstruction();
 		
+<<<<<<< HEAD
 		instructions = new LinkedList<Instruction>();
 		//instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
 		instructions.add(new DriveInstruction(wheels, 1));
@@ -66,6 +71,14 @@ public class Robot extends IterativeRobot
 		/*instructions.add(new DriveInstruction(wheels, 2));
 		instructions.add(new TurnInstruction(wheels, -90, TurnDir.right));
 		instructions.add(new DriveInstruction(wheels, 2));*/
+=======
+		instructions = new Stack<Instruction>();
+		instructions.push(new DriveInstruction(wheels, 2));
+		instructions.push(new TurnInstruction(wheels, -90, TurnDir.right));
+		instructions.push(new DriveInstruction(wheels, 2));
+		instructions.push(new TurnInstruction(wheels, -90, TurnDir.right));
+		instructions.push(new DriveInstruction(wheels, 2));
+>>>>>>> 420beb57aaf1a9d0d4613a598f95cdee10e7c956
 	}
 	
 	/**

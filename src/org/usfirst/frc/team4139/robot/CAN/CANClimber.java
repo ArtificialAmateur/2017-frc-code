@@ -47,7 +47,8 @@ public class CANClimber
 	}
 	//unwindToggle() is called to start or stop the process of the robot's descent from the rope.
 	public void unwindToggle()
-	{ // This provides a way to toggle the motor, but not stop it. You should add that functionality
+	{
+		// This provides a way to toggle the motor, but not stop it. You should add that functionality
 		isDescending=!isDescending;
 		Timer.delay(0.5);
 	}
