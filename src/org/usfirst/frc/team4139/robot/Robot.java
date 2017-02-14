@@ -1,20 +1,11 @@
 package org.usfirst.frc.team4139.robot;
 
 import java.util.LinkedList;
-
-import org.usfirst.frc.team4139.robot.CAN.CANWheels;
-import org.usfirst.frc.team4139.robot.Sensors.Controller;
-import org.usfirst.frc.team4139.robot.Sensors.Ultrasonic;
-import org.usfirst.frc.team4139.robot.Utils.DriveInstruction;
-import org.usfirst.frc.team4139.robot.Utils.Instruction;
-import org.usfirst.frc.team4139.robot.Utils.NoInstruction;
-import org.usfirst.frc.team4139.robot.Utils.TurnDir;
-import org.usfirst.frc.team4139.robot.Utils.TurnInstruction;
-
-import edu.wpi.first.wpilibj.IterativeRobot;
-
-//Testing accessing the camera feed.
-import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.*;
+import org.usfirst.frc.team4139.robot.CAN.*;
+import org.usfirst.frc.team4139.robot.Sensors.*;
+import org.usfirst.frc.team4139.robot.Sensors.Camera;
+import org.usfirst.frc.team4139.robot.Utils.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,7 +22,7 @@ public class Robot extends IterativeRobot
 	private CANWheels wheels;
 	private Controller stick;
 	private Instruction currentInstruction;
-	private Ultrasonic sonic; // Gotta go fast.
+	private Camera webcam;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -40,8 +31,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit()
 	{
-		//More camera testing stuff
-		CameraServer.getInstance().startAutomaticCapture();
+		webcam = new Camera();
 	}
 
 	@Override
@@ -105,7 +95,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void testInit()
 	{
-		sonic = new Ultrasonic();
+
 	}
 
 	/**
@@ -114,7 +104,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void testPeriodic()
 	{
-		sonic.printSonicDist();
+		webcam.getXPos();
 	}
 }
 
