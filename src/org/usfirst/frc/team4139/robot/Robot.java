@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import edu.wpi.first.wpilibj.*;
 import org.usfirst.frc.team4139.robot.CAN.*;
 import org.usfirst.frc.team4139.robot.Sensors.*;
+import org.usfirst.frc.team4139.robot.Sensors.Ultrasonic;
 import org.usfirst.frc.team4139.robot.Utils.*;
 
 /**
@@ -20,6 +21,7 @@ public class Robot extends IterativeRobot
 
 	private CANWheels   wheels;
 	private CANClimber  climber;
+	private CANDumper   dumper;
 	private Controller  stick;
 	private Instruction currentInstruction;
 	private Camera      webcam;
@@ -96,7 +98,17 @@ public class Robot extends IterativeRobot
 			climber.unwindToggle();
 			Timer.delay(1);
 		}
+		dumper.update();
+		if(stick.getButtonX())
+		{
+			dumper.activate();
+		}
+		
 		climber.climb();
+		if(stick.getButtonA())
+		{
+			climber.toggle();
+		}
 		
 	}
 
