@@ -31,9 +31,13 @@ public class CANWheels
 	public static final int TANK_DRIVE = 1;
 	public static final int ARCADE_DRIVE = 2;
 	
-	private Encoder encoder;
+	private Encoder lEncoder;
+	private Encoder rEncoder;
+	
 	private Gyroscope gyro;
 	private Timer timer;
+	
+	public static final double circumference = 6*Math.PI;
 
 	public CANWheels(int idFL, int idRL, int idFR, int idRR)
 	{
@@ -48,12 +52,20 @@ public class CANWheels
 		rLMotor = new CANTalon(idRL);
 		fRMotor = new CANTalon(idFR);
 		rRMotor = new CANTalon(idRR);
+		
 		robot = new RobotDrive(fLMotor,rLMotor,fRMotor,rRMotor);
 		driveMode = TANK_DRIVE;
+		
+		//temp variables for channels
+		lEncoder = new Encoder(0,1);
+		lEncoder.setDistancePerPulse(circumference/360);
+		rEncoder.setDistancePerPulse(circumference/360);
+		
 		timer = new Timer();
 		timer.reset();
 	}
 	
+	/*
 	//This class tells the robot to drive a certain distance in feet, at a speed of 0.3
 	//This class needs to be changed to work with the encoder when the encoder is put on the robot.
 	public boolean driveDist(double feet)
@@ -75,6 +87,27 @@ public class CANWheels
 		}
 		else {
 			timer.reset();
+			return true;
+		}
+	}*/
+	
+	public boolean driveDist(double feet)
+	{ 	
+		this.switchToArcade();
+		System.out.println(lEncoder.getDistance());
+		
+		if(lEncoder.getDistance() < feet)
+		{
+			double angle = gyro.getGyroAngle();
+			double constant = gyro.getGyroConstant();
+			
+			this.drive(-.5,-angle*constant);
+			System.out.println("Driving");
+			return false;
+		}
+		else
+		{
+			lEncoder.reset();
 			return true;
 		}
 	}
