@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import edu.wpi.first.wpilibj.*;
 import org.usfirst.frc.team4139.robot.CAN.*;
 import org.usfirst.frc.team4139.robot.Sensors.*;
-import org.usfirst.frc.team4139.robot.Sensors.Camera;
 import org.usfirst.frc.team4139.robot.Utils.*;
 
 /**
@@ -19,10 +18,11 @@ public class Robot extends IterativeRobot
 	private LinkedList<Instruction> instructions;
 	// Initialize variables here
 
-	private CANWheels wheels;
-	private Controller stick;
+	private CANWheels   wheels;
+	private CANClimber  climber;
+	private Controller  stick;
 	private Instruction currentInstruction;
-	private Camera webcam;
+	private Camera      webcam;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -31,13 +31,15 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit()
 	{
+		wheels = new CANWheels(2,3,4,1);
 		webcam = new Camera();
+		climber = new CANClimber();
 	}
 
 	@Override
 	public void autonomousInit()
 	{
-		wheels = new CANWheels(2,3,4,1);
+		
 		wheels.switchToArcade();
 		
 		currentInstruction = new NoInstruction();
@@ -63,23 +65,22 @@ public class Robot extends IterativeRobot
 	public synchronized void autonomousPeriodic()
 	{		
 		//first time will always return true
-		if(currentInstruction.execute()){
-			if(instructions.isEmpty()){
+		if(currentInstruction.execute())
+		{
+			if(instructions.isEmpty())
 				currentInstruction = new NoInstruction();
-			}
-			else if(!instructions.isEmpty()){
+			else if(!instructions.isEmpty())
 				currentInstruction = instructions.pop();
-			}
 		}
+		webcam.getXPos();
 	}
 	
 	@Override
 	public void teleopInit()
 	{
-		wheels = new CANWheels(2,3,4,1);
-		wheels.switchToArcade();
+		wheels.switchToTank();
 		stick = new Controller();
-		stick.setArcade();
+		stick.setTank();
 	}
 
 	/**
@@ -88,8 +89,15 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic()
 	{
-		wheels.switchToArcade();
 		wheels.drive(stick.getStickLeft(), stick.getStickRight());
+		if(stick.getButtonY())
+		{
+			climber.toggle();
+			climber.unwindToggle();
+			Timer.delay(1);
+		}
+		climber.climb();
+		
 	}
 
 	@Override
