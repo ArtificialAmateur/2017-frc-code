@@ -8,9 +8,9 @@ public class Ultrasonic
 	private double currentDist;
 	public static final double INCH_CONVERT = 0.125; // factor to convert sensor values to a distance in inches
 	
-	public Ultrasonic()
+	public Ultrasonic(int input)
 	{
-		sonic    = new AnalogInput(2); //Input		
+		sonic    = new AnalogInput(input); //Input		
 	}
 	
 	// Returns the ultrasonic range in inches.

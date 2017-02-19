@@ -2,6 +2,7 @@ package org.usfirst.frc.team4139.robot.CAN;
 
 import org.usfirst.frc.team4139.robot.Sensors.Gyroscope;
 import org.usfirst.frc.team4139.robot.Utils.TurnDir;
+import org.usfirst.frc.team4139.robot.Sensors.Ultrasonic;
 
 import com.ctre.CANTalon;
 
@@ -31,23 +32,24 @@ public class CANWheels
 	public static final int TANK_DRIVE = 1;
 	public static final int ARCADE_DRIVE = 2;
 	
-	private Encoder lEncoder;
-	private Encoder rEncoder;
-	
+	private Encoder encoder;
 	private Gyroscope gyro;
 	private Timer timer;
+	private Ultrasonic sonic; //Gotta go fast
 	
 	public static final double circumference = 6*Math.PI;
 
 	public CANWheels(int idFL, int idRL, int idFR, int idRR)
 	{
-		//encoder = new Encoder(0,1);
+		//Temp variables for inputs of Encoder
+		encoder = new Encoder(0,1);
+		encoder.setDistancePerPulse(circumference/1024);
 		
 		gyro = new Gyroscope();
 		gyro.gyroReset();
-		//'3' is just a placeholder. We need to calculate the circumference of the wheels in order
-		//to gauge the distance that each revolution takes. Please use feet as a unit.
-		//encoder.setDistancePerPulse(3);
+		
+		sonic = new Ultrasonic(2);
+		
 		fLMotor = new CANTalon(idFL);
 		rLMotor = new CANTalon(idRL);
 		fRMotor = new CANTalon(idFR);
@@ -56,18 +58,29 @@ public class CANWheels
 		robot = new RobotDrive(fLMotor,rLMotor,fRMotor,rRMotor);
 		driveMode = TANK_DRIVE;
 		
-		//temp variables for channels
-		lEncoder = new Encoder(0,1);
-		lEncoder.setDistancePerPulse(circumference/360);
-		rEncoder.setDistancePerPulse(circumference/360);
-		
 		timer = new Timer();
 		timer.reset();
 	}
 	
-	/*
-	//This class tells the robot to drive a certain distance in feet, at a speed of 0.3
-	//This class needs to be changed to work with the encoder when the encoder is put on the robot.
+	public CANWheels(int idL, int idR)
+	{
+		//encoder = new Encoder(0,1);
+		
+		gyro = new Gyroscope();
+		gyro.gyroReset();
+		//'3' is just a placeholder. We need to calculate the circumference of the wheels in order
+		//to gauge the distance that each revolution takes. Please use feet as a unit.
+		//encoder.setDistancePerPulse(3);
+		fLMotor = new CANTalon(idL);
+		fRMotor = new CANTalon(idR);
+		
+		robot = new RobotDrive(fLMotor,fRMotor);
+		driveMode = TANK_DRIVE;
+		
+		timer = new Timer();
+		timer.reset();
+	}
+	//This class tells the robot to drive for a certain amount of time (the parameter), at a speed of 0.3
 	public boolean driveDist(double feet)
 	{ 	
 		this.switchToArcade();
@@ -89,8 +102,8 @@ public class CANWheels
 			timer.reset();
 			return true;
 		}
-	}*/
-	
+	}
+	/*
 	public boolean driveDist(double feet)
 	{ 	
 		this.switchToArcade();
@@ -111,7 +124,7 @@ public class CANWheels
 			return true;
 		}
 	}
-	
+	*/
 	//this class tells the robot to turn in a certain direction until it is a certain degree from its initial direction.
 	public boolean turn(double degrees, TurnDir turnDir)
 	{

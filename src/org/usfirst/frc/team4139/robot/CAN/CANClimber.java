@@ -3,7 +3,6 @@ package org.usfirst.frc.team4139.robot.CAN;
  * This class was written by Daniel Ritchie for Team 4139 in the FIRST Robotics Competition
  * It is meant to be called towards the end of the competition, when the robots are supposed to climb a rope to a certain point.
  * Once positioned correctly, use toggle() to start and stop the motor moving upward.
- * Then, when at the top, use the unwindToggle() to start and stop the descent from the rope.
  * The method climb() should be called every time that teleopPeriodic() is called in order for the motors to run correctly.
  */
 import edu.wpi.first.wpilibj.*;
@@ -16,11 +15,11 @@ public class CANClimber
 	private boolean isDescending;
 	//Constructor: sets the boolean instance fields to the correct initial value (motionless), initializes the CANTalon,
 	//along with making sure that the CANTalon is in the correct mode.
-	public CANClimber()
+	public CANClimber(int talonID)
 	{
 		isClimbing = false;
 		isDescending = false;
-		winder = new CANTalon(10);
+		winder = new CANTalon(talonID);
 		winder.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 	}
 	//toggle() is meant to be called to either start or stop the ascent of the robot up the rope.

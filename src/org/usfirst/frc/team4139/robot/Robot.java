@@ -21,7 +21,6 @@ public class Robot extends IterativeRobot
 
 	private CANWheels   wheels;
 	private CANClimber  climber;
-	private CANDumper   dumper;
 	private Controller  stick;
 	private Instruction currentInstruction;
 	private Camera      webcam;
@@ -35,7 +34,7 @@ public class Robot extends IterativeRobot
 	{
 		wheels = new CANWheels(2,3,4,1);
 		webcam = new Camera();
-		climber = new CANClimber();
+		climber = new CANClimber(5);
 	}
 
 	@Override
@@ -47,7 +46,6 @@ public class Robot extends IterativeRobot
 		currentInstruction = new NoInstruction();
 		
 		instructions = new LinkedList<Instruction>();
-		//instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
 		instructions.add(new DriveInstruction(wheels, 1));
 		
 		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
@@ -92,23 +90,13 @@ public class Robot extends IterativeRobot
 	public void teleopPeriodic()
 	{
 		wheels.drive(stick.getStickLeft(), stick.getStickRight());
-		if(stick.getButtonY())
-		{
-			climber.toggle();
-			climber.unwindToggle();
-			Timer.delay(1);
-		}
-		dumper.update();
-		if(stick.getButtonX())
-		{
-			dumper.activate();
-		}
-		
-		climber.climb();
 		if(stick.getButtonA())
 		{
 			climber.toggle();
+			Timer.delay(1);
 		}
+		
+		climber.climb();
 		
 	}
 
