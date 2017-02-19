@@ -34,7 +34,7 @@ public class Robot extends IterativeRobot
 	{
 		wheels = new CANWheels(2,3,4,1);
 		webcam = new Camera();
-		climber = new CANClimber(5);
+		climber = new CANClimber(0);
 	}
 
 	@Override
@@ -46,16 +46,16 @@ public class Robot extends IterativeRobot
 		currentInstruction = new NoInstruction();
 		
 		instructions = new LinkedList<Instruction>();
-		instructions.add(new DriveInstruction(wheels, 3));
+		instructions.add(new DriveInstruction(wheels, 1));
 		
 		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
-		instructions.add(new DriveInstruction(wheels, 3));
+		instructions.add(new DriveInstruction(wheels, 1));
 		
 		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
-		instructions.add(new DriveInstruction(wheels, 3));
+		instructions.add(new DriveInstruction(wheels, 1));
 		
 		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
-		instructions.add(new DriveInstruction(wheels, 3));
+		instructions.add(new DriveInstruction(wheels, 1));
 	}
 	
 	/**

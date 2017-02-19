@@ -1,8 +1,8 @@
 package org.usfirst.frc.team4139.robot.CAN;
 
 import org.usfirst.frc.team4139.robot.Sensors.Gyroscope;
-import org.usfirst.frc.team4139.robot.Utils.TurnDir;
 import org.usfirst.frc.team4139.robot.Sensors.Ultrasonic;
+import org.usfirst.frc.team4139.robot.Utils.TurnDir;
 
 import com.ctre.CANTalon;
 
@@ -42,8 +42,8 @@ public class CANWheels
 	public CANWheels(int idFL, int idRL, int idFR, int idRR)
 	{
 		//Temp variables for inputs of Encoder
-		encoder = new Encoder(0,1);
-		encoder.setDistancePerPulse(circumference/1024);
+		//encoder = new Encoder(0,1);
+		//encoder.setDistancePerPulse(circumference/1024);
 		
 		gyro = new Gyroscope();
 		gyro.gyroReset();
@@ -54,6 +54,7 @@ public class CANWheels
 		rLMotor = new CANTalon(idRL);
 		fRMotor = new CANTalon(idFR);
 		rRMotor = new CANTalon(idRR);
+		//fRMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
 		
 		robot = new RobotDrive(fLMotor,rLMotor,fRMotor,rRMotor);
 		driveMode = TANK_DRIVE;
@@ -64,8 +65,8 @@ public class CANWheels
 	
 	public CANWheels(int idL, int idR)
 	{
-		encoder = new Encoder(0,1);
-		encoder.setDistancePerPulse(circumference/1024);
+		//encoder = new Encoder(0,1);
+		//encoder.setDistancePerPulse(circumference/1024);
 		
 		gyro = new Gyroscope();
 		gyro.gyroReset();
@@ -80,50 +81,50 @@ public class CANWheels
 		timer.reset();
 	}
 	//This class tells the robot to drive for a certain amount of time (the parameter), at a speed of 0.3
-//	public boolean driveDist(double feet)
-//	{ 	
-//		this.switchToArcade();
-//		if(timer.get() == 0){
-//			timer.start();
-//		}
-//		
-//		double angle = gyro.getGyroAngle();
-//		double constant = gyro.getGyroConstant();
-//		
-//		System.out.println(timer.get());
-//		
-//		if(timer.get() < 3){
-//			this.drive(-.5, -angle*constant);
-//			System.out.println("Driving");
-//			return false;
-//		}
-//		else {
-//			timer.reset();
-//			return true;
-//		}
-//	}
-	
 	public boolean driveDist(double feet)
 	{ 	
 		this.switchToArcade();
-		System.out.println(encoder.getDistance());
+		if(timer.get() == 0){
+			timer.start();
+		}
 		
-		if(encoder.getDistance() < feet)
-		{
-			double angle = gyro.getGyroAngle();
-			double constant = gyro.getGyroConstant();
-			
-			this.drive(-.5,-angle*constant);
+		double angle = gyro.getGyroAngle();
+		double constant = gyro.getGyroConstant();
+		
+		System.out.println(timer.get());
+		
+		if(timer.get() < 3){
+			this.drive(-.5, -angle*constant);
 			System.out.println("Driving");
 			return false;
 		}
-		else
-		{
-			encoder.reset();
-			this.drive(0.0, 0.0);
+		else {
+			timer.reset();
 			return true;
 		}
 	}
+	
+//	public boolean driveDist(double feet)
+//	{ 	
+//		this.switchToArcade();
+//		System.out.println(encoder.getDistance());
+//		
+//		if(encoder.getDistance() < feet)
+//		{
+//			double angle = gyro.getGyroAngle();
+//			double constant = gyro.getGyroConstant();
+//			
+//			this.drive(-.5,-angle*constant);
+//			System.out.println("Driving");
+//			return false;
+//		}
+//		else
+//		{
+//			encoder.reset();
+//			this.drive(0.0, 0.0);
+//			return true;
+//		}
+//	}
 	//this class tells the robot to turn in a certain direction until it is a certain degree from its initial direction.
 	public boolean turn(double degrees, TurnDir turnDir)
 	{
@@ -167,13 +168,13 @@ public class CANWheels
 	{
 		switch(driveMode){
 		case TANK_DRIVE:
-			robot.tankDrive(-lS, -rS);
+			robot.tankDrive(lS, rS);
 			break;
 		case ARCADE_DRIVE:
-			robot.arcadeDrive(-lS, -rS);
+			robot.arcadeDrive(lS, rS);
 			break;
 		default:
-			robot.tankDrive(-lS, -rS);
+			robot.tankDrive(lS, rS);
 		}
 	}
 	
