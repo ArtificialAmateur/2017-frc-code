@@ -10,7 +10,7 @@ import com.ctre.*;
 public class CANClimber
 {	
 	//Three instance fields. 'winder' is the CANTalon, and the two booleans are used to "remember" if the robot is supposed to be climbing or descending.
-	private CANTalon winder;
+	private Talon winder;
 	private boolean isClimbing;
 	private boolean isDescending;
 	//Constructor: sets the boolean instance fields to the correct initial value (motionless), initializes the CANTalon,
@@ -19,8 +19,7 @@ public class CANClimber
 	{
 		isClimbing = false;
 		isDescending = false;
-		winder = new CANTalon(talonID);
-		winder.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		winder = new Talon(talonID);
 	}
 	//toggle() is meant to be called to either start or stop the ascent of the robot up the rope.
 	public void toggle()
@@ -33,11 +32,11 @@ public class CANClimber
 	{
 		if(isClimbing)
 		{
-			winder.set(0.5);
+			winder.set(-1.0);
 		}
 		else if(isDescending)
 		{
-			winder.set(-0.25);
+			winder.set(1.0);
 		}
 		else
 		{
@@ -47,7 +46,6 @@ public class CANClimber
 	//unwindToggle() is called to start or stop the process of the robot's descent from the rope.
 	public void unwindToggle()
 	{
-		// This provides a way to toggle the motor, but not stop it. You should add that functionality
 		isDescending=!isDescending;
 		Timer.delay(0.5);
 	}

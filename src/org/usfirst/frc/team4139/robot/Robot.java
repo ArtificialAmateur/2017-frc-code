@@ -46,16 +46,16 @@ public class Robot extends IterativeRobot
 		currentInstruction = new NoInstruction();
 		
 		instructions = new LinkedList<Instruction>();
-		instructions.add(new DriveInstruction(wheels, 1));
+		instructions.add(new DriveInstruction(wheels, 3));
 		
 		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
-		instructions.add(new DriveInstruction(wheels, 1));
+		instructions.add(new DriveInstruction(wheels, 3));
 		
 		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
-		instructions.add(new DriveInstruction(wheels, 1));
+		instructions.add(new DriveInstruction(wheels, 3));
 		
 		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
-		instructions.add(new DriveInstruction(wheels, 1));
+		instructions.add(new DriveInstruction(wheels, 3));
 	}
 	
 	/**
@@ -93,7 +93,17 @@ public class Robot extends IterativeRobot
 		if(stick.getButtonA())
 		{
 			climber.toggle();
-			Timer.delay(1);
+		}
+		if(stick.getButtonX()){
+			wheels.switchToArcade();
+			stick.setArcade();
+		}
+		if(stick.getButtonB()){
+			wheels.switchToTank();
+			stick.setTank();
+		}
+		if(stick.getButtonY()){
+			climber.unwindToggle();
 		}
 		
 		climber.climb();

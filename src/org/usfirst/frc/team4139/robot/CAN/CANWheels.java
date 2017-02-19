@@ -64,13 +64,12 @@ public class CANWheels
 	
 	public CANWheels(int idL, int idR)
 	{
-		//encoder = new Encoder(0,1);
+		encoder = new Encoder(0,1);
+		encoder.setDistancePerPulse(circumference/1024);
 		
 		gyro = new Gyroscope();
 		gyro.gyroReset();
-		//'3' is just a placeholder. We need to calculate the circumference of the wheels in order
-		//to gauge the distance that each revolution takes. Please use feet as a unit.
-		//encoder.setDistancePerPulse(3);
+		
 		fLMotor = new CANTalon(idL);
 		fRMotor = new CANTalon(idR);
 		
@@ -81,35 +80,35 @@ public class CANWheels
 		timer.reset();
 	}
 	//This class tells the robot to drive for a certain amount of time (the parameter), at a speed of 0.3
+//	public boolean driveDist(double feet)
+//	{ 	
+//		this.switchToArcade();
+//		if(timer.get() == 0){
+//			timer.start();
+//		}
+//		
+//		double angle = gyro.getGyroAngle();
+//		double constant = gyro.getGyroConstant();
+//		
+//		System.out.println(timer.get());
+//		
+//		if(timer.get() < 3){
+//			this.drive(-.5, -angle*constant);
+//			System.out.println("Driving");
+//			return false;
+//		}
+//		else {
+//			timer.reset();
+//			return true;
+//		}
+//	}
+	
 	public boolean driveDist(double feet)
 	{ 	
 		this.switchToArcade();
-		if(timer.get() == 0){
-			timer.start();
-		}
+		System.out.println(encoder.getDistance());
 		
-		double angle = gyro.getGyroAngle();
-		double constant = gyro.getGyroConstant();
-		
-		System.out.println(timer.get());
-		
-		if(timer.get() < 3){
-			this.drive(-.5, -angle*constant);
-			System.out.println("Driving");
-			return false;
-		}
-		else {
-			timer.reset();
-			return true;
-		}
-	}
-	/*
-	public boolean driveDist(double feet)
-	{ 	
-		this.switchToArcade();
-		System.out.println(lEncoder.getDistance());
-		
-		if(lEncoder.getDistance() < feet)
+		if(encoder.getDistance() < feet)
 		{
 			double angle = gyro.getGyroAngle();
 			double constant = gyro.getGyroConstant();
@@ -120,11 +119,11 @@ public class CANWheels
 		}
 		else
 		{
-			lEncoder.reset();
+			encoder.reset();
+			this.drive(0.0, 0.0);
 			return true;
 		}
 	}
-	*/
 	//this class tells the robot to turn in a certain direction until it is a certain degree from its initial direction.
 	public boolean turn(double degrees, TurnDir turnDir)
 	{
@@ -146,6 +145,7 @@ public class CANWheels
 		}
 		else {
 			gyro.gyroReset();
+			this.drive(0.0, 0.0);
 			return true;
 		}
 	}
