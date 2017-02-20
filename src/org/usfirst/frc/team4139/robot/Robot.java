@@ -18,12 +18,12 @@ public class Robot extends IterativeRobot
 {
 	private LinkedList<Instruction> instructions;
 	// Initialize variables here
-
+	private static int AUTO_MODE;
 	private CANWheels   wheels;
 	private CANClimber  climber;
 	private Controller  stick;
 	private Instruction currentInstruction;
-	private Camera      webcam;
+//	private Camera      webcam;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -33,7 +33,7 @@ public class Robot extends IterativeRobot
 	public void robotInit()
 	{
 		wheels = new CANWheels(4,1,2,3);
-		webcam = new Camera();
+//		webcam = new Camera();
 		climber = new CANClimber(0);
 	}
 
@@ -72,7 +72,6 @@ public class Robot extends IterativeRobot
 			else if(!instructions.isEmpty())
 				currentInstruction = instructions.pop();
 		}
-		webcam.getXPos();
 	}
 	
 	@Override
@@ -102,9 +101,6 @@ public class Robot extends IterativeRobot
 			wheels.switchToTank();
 			stick.setTank();
 		}
-		if(stick.getButtonY()){
-			climber.unwindToggle();
-		}
 		
 		climber.climb();
 		
@@ -122,7 +118,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void testPeriodic()
 	{
-		webcam.getXPos();
+//		webcam.getXPos();
 	}
 }
 

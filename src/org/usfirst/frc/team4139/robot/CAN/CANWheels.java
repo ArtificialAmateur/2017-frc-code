@@ -13,7 +13,6 @@ import com.ctre.CANTalon;
  * turn to a certain degree for the automated section of the competition.
  */
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -32,7 +31,6 @@ public class CANWheels
 	public static final int TANK_DRIVE = 1;
 	public static final int ARCADE_DRIVE = 2;
 	
-	private Encoder encoder;
 	private Gyroscope gyro;
 	private Timer timer;
 	private Ultrasonic sonic; //Gotta go fast
@@ -40,11 +38,7 @@ public class CANWheels
 	public static final double circumference = 6*Math.PI;
 
 	public CANWheels(int idFL, int idRL, int idFR, int idRR)
-	{
-		//Temp variables for inputs of Encoder
-		//encoder = new Encoder(0,1);
-		//encoder.setDistancePerPulse(circumference/1024);
-		
+	{		
 		gyro = new Gyroscope();
 		gyro.gyroReset();
 		
@@ -54,7 +48,10 @@ public class CANWheels
 		rLMotor = new CANTalon(idRL);
 		fRMotor = new CANTalon(idFR);
 		rRMotor = new CANTalon(idRR);
-		//fRMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+		
+		fRMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+		fRMotor.configEncoderCodesPerRev(1024);
+		fRMotor.setPosition(0);
 		
 		robot = new RobotDrive(fLMotor,rLMotor,fRMotor,rRMotor);
 		driveMode = TANK_DRIVE;
@@ -63,23 +60,6 @@ public class CANWheels
 		timer.reset();
 	}
 	
-	public CANWheels(int idL, int idR)
-	{
-		//encoder = new Encoder(0,1);
-		//encoder.setDistancePerPulse(circumference/1024);
-		
-		gyro = new Gyroscope();
-		gyro.gyroReset();
-		
-		fLMotor = new CANTalon(idL);
-		fRMotor = new CANTalon(idR);
-		
-		robot = new RobotDrive(fLMotor,fRMotor);
-		driveMode = TANK_DRIVE;
-		
-		timer = new Timer();
-		timer.reset();
-	}
 	//This class tells the robot to drive for a certain amount of time (the parameter), at a speed of 0.3
 	public boolean driveDist(double feet)
 	{ 	
@@ -94,7 +74,7 @@ public class CANWheels
 		System.out.println(timer.get());
 		
 		if(timer.get() < 3){
-			this.drive(-.5, -angle*constant);
+			this.drive(-.5,0.0);
 			System.out.println("Driving");
 			return false;
 		}
@@ -107,9 +87,9 @@ public class CANWheels
 //	public boolean driveDist(double feet)
 //	{ 	
 //		this.switchToArcade();
-//		System.out.println(encoder.getDistance());
-//		
-//		if(encoder.getDistance() < feet)
+//		System.out.println("Encoder Position: "+fRMotor.getEncPosition());
+//		System.out.println("Distance in Inches: "+fRMotor.getEncPosition()*circumference);
+//		if(circumference * fRMotor.getEncPosition() < feet)
 //		{
 //			double angle = gyro.getGyroAngle();
 //			double constant = gyro.getGyroConstant();
@@ -120,7 +100,7 @@ public class CANWheels
 //		}
 //		else
 //		{
-//			encoder.reset();
+//			fRMotor.setPosition(0);
 //			this.drive(0.0, 0.0);
 //			return true;
 //		}
