@@ -26,6 +26,7 @@ public class Camera
 	
 	private VisionThread visionThread;
 	private double centerX = 0.0;
+	private double distance = 0.0;
 	private final Object imgLock = new Object();
 	
 	public Camera()
@@ -39,16 +40,34 @@ public class Camera
 	        	for(MatOfPoint point: pipeline.filterContoursOutput()){
 	        		Rect rect = Imgproc.boundingRect(point);
 	        		rects.add(rect);
+	        		System.out.println(rect.x);
 	        	}
+	        	
+	      
 	            //Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
 	            synchronized (imgLock) {
-	               // this.centerX = r.x + (r.width / 2);
-	            	this.centerX = averageX(rects);
+	            	int averageX = averageX(rects);
+		        	this.distance = distanceBetween(rects, averageX);
+		          	this.centerX = averageX;
 	            }
 	        }
 	    });
 	    visionThread.start();
 	}
+	
+	public int distanceBetween(ArrayList<Rect> rects, int val){
+		int retVal = 2*IMG_WIDTH;
+		
+		for(Rect rect: rects){
+			int x = rect.x + rect.width;
+			
+			if(Math.abs(val-x) < retVal){
+				retVal = Math.abs(val-x);
+			}
+		}
+		return 2*retVal;
+	}
+	
 	
 	public int averageX(ArrayList<Rect> rects){
 		int total = 0;
@@ -69,8 +88,10 @@ public class Camera
 		{
 			System.out.println("Accessing cameraX instance field...");
 			//centerX = this.centerX;
+
+			System.out.println("Distance between is " + this.distance);
+			System.out.println("Current centerX value: " + this.centerX);
 		}
-		System.out.println("Current centerX value: " + this.centerX);
 		return centerX;
 	}
 	
