@@ -12,20 +12,18 @@ public class CANClimber
 	//Three instance fields. 'winder' is the CANTalon, and the two booleans are used to "remember" if the robot is supposed to be climbing or descending.
 	private Talon winder;
 	private boolean isClimbing;
-	private boolean isDescending;
 	//Constructor: sets the boolean instance fields to the correct initial value (motionless), initializes the CANTalon,
 	//along with making sure that the CANTalon is in the correct mode.
 	public CANClimber(int talonID)
 	{
 		isClimbing = false;
-		isDescending = false;
 		winder = new Talon(talonID);
 	}
 	//toggle() is meant to be called to either start or stop the ascent of the robot up the rope.
 	public void toggle()
 	{
 		isClimbing=!isClimbing;
-		Timer.delay(0.5);
+		Timer.delay(0.75);
 	}
 	//climb() is meant to be called in every teleopPeriodic() call.
 	public void climb()
@@ -34,19 +32,9 @@ public class CANClimber
 		{
 			winder.set(-1.0);
 		}
-		else if(isDescending)
-		{
-			winder.set(1.0);
-		}
 		else
 		{
 			winder.set(0.0);
 		}
-	}
-	//unwindToggle() is called to start or stop the process of the robot's descent from the rope.
-	public void unwindToggle()
-	{
-		isDescending=!isDescending;
-		Timer.delay(0.5);
 	}
 }
