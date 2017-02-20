@@ -168,13 +168,13 @@ public class CANWheels
 	{
 		switch(driveMode){
 		case TANK_DRIVE:
-			robot.tankDrive(lS, rS);
+			robot.tankDrive(-lS, -rS);
 			break;
 		case ARCADE_DRIVE:
-			robot.arcadeDrive(lS, rS);
+			robot.arcadeDrive(-lS, -rS);
 			break;
 		default:
-			robot.tankDrive(lS, rS);
+			robot.tankDrive(-lS, -rS);
 		}
 	}
 	
