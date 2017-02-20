@@ -32,7 +32,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit()
 	{
-		wheels = new CANWheels(2,3,4,1);
+		wheels = new CANWheels(4,1,2,3);
 		webcam = new Camera();
 		climber = new CANClimber(0);
 	}
