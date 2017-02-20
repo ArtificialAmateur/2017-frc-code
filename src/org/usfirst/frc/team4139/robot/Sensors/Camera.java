@@ -9,13 +9,15 @@
 
 package org.usfirst.frc.team4139.robot.Sensors;
 
-import edu.wpi.first.wpilibj.vision.VisionThread;
+import java.util.ArrayList;
 
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.vision.VisionThread;
 
 public class Camera
 {
@@ -33,13 +35,27 @@ public class Camera
 		
 		visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
 	        if (!pipeline.filterContoursOutput().isEmpty()) {
-	            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+	        	ArrayList<Rect> rects = new ArrayList<Rect>();
+	        	for(MatOfPoint point: pipeline.filterContoursOutput()){
+	        		Rect rect = Imgproc.boundingRect(point);
+	        		rects.add(rect);
+	        	}
+	            //Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
 	            synchronized (imgLock) {
-	                this.centerX = r.x + (r.width / 2);
+	               // this.centerX = r.x + (r.width / 2);
+	            	this.centerX = averageX(rects);
 	            }
 	        }
 	    });
 	    visionThread.start();
+	}
+	
+	public int averageX(ArrayList<Rect> rects){
+		int total = 0;
+		for(Rect rect: rects){
+			total+=rect.x + rect.width/2;
+		}
+		return total/rects.size();
 	}
 	
 	/*
@@ -48,13 +64,13 @@ public class Camera
 	 */
 	public double getXPos()
 	{
-		double centerX;
+		//double centerX;
 		synchronized(imgLock)
 		{
 			System.out.println("Accessing cameraX instance field...");
-			centerX = this.centerX;
+			//centerX = this.centerX;
 		}
-		System.out.println("Current centerX value: " + centerX);
+		System.out.println("Current centerX value: " + this.centerX);
 		return centerX;
 	}
 	
