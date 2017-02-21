@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4139.robot.CAN;
 
 import org.usfirst.frc.team4139.robot.Sensors.Gyroscope;
-import org.usfirst.frc.team4139.robot.Sensors.Ultrasonic;
 import org.usfirst.frc.team4139.robot.Utils.TurnDir;
 
 import com.ctre.CANTalon;
@@ -33,25 +32,23 @@ public class CANWheels
 	
 	private Gyroscope gyro;
 	private Timer timer;
-	private Ultrasonic sonic; //Gotta go fast
 	
-	public static final double circumference = 6*Math.PI;
+	public static final double circumference = (6*Math.PI);
 
 	public CANWheels(int idFL, int idRL, int idFR, int idRR)
 	{		
 		gyro = new Gyroscope();
 		gyro.gyroReset();
-		
-		sonic = new Ultrasonic(2);
-		
+				
 		fLMotor = new CANTalon(idFL);
 		rLMotor = new CANTalon(idRL);
 		fRMotor = new CANTalon(idFR);
 		rRMotor = new CANTalon(idRR);
 		
-		fRMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-		fRMotor.configEncoderCodesPerRev(1024);
-		fRMotor.setPosition(0);
+		rRMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+		rRMotor.reverseSensor(true);
+		rRMotor.configEncoderCodesPerRev(1040);
+		rRMotor.setPosition(0);
 		
 		robot = new RobotDrive(fLMotor,rLMotor,fRMotor,rRMotor);
 		driveMode = TANK_DRIVE;
@@ -60,57 +57,69 @@ public class CANWheels
 		timer.reset();
 	}
 	
-	//This class tells the robot to drive for a certain amount of time (the parameter), at a speed of 0.3
-	public boolean driveDist(double feet)
-	{ 	
-		this.switchToArcade();
-		if(timer.get() == 0){
-			timer.start();
-		}
-		
-		double angle = gyro.getGyroAngle();
-		double constant = gyro.getGyroConstant();
-		
-		System.out.println(timer.get());
-		
-		if(timer.get() < 3){
-			this.drive(-.5,0.0);
-			System.out.println("Driving");
-			return false;
-		}
-		else {
-			timer.reset();
-			return true;
-		}
+	public void start(){
+		gyro.gyroReset();
+		rRMotor.setPosition(0);
+		timer.reset();
 	}
 	
-//	public boolean driveDist(double feet)
+	public String testEnc(){
+		return "Velocity: " + rRMotor.getEncVelocity() + "\nPosition: " + rRMotor.getPosition();
+	}
+	
+//	//This class tells the robot to drive for a certain amount of time (the parameter), at a speed of 0.3
+//	public boolean driveDist(double mru)
 //	{ 	
 //		this.switchToArcade();
-//		System.out.println("Encoder Position: "+fRMotor.getEncPosition());
-//		System.out.println("Distance in Inches: "+fRMotor.getEncPosition()*circumference);
-//		if(circumference * fRMotor.getEncPosition() < feet)
-//		{
-//			double angle = gyro.getGyroAngle();
-//			double constant = gyro.getGyroConstant();
-//			
-//			this.drive(-.5,-angle*constant);
+//		if(timer.get() == 0){
+//			timer.start();
+//		}
+//		
+//		double angle = gyro.getGyroAngle();
+//		double constant = gyro.getGyroConstant();
+//		
+//		System.out.println(timer.get());
+//		
+//		if(timer.get() < mru){
+//			this.drive(-.5,0.0);
 //			System.out.println("Driving");
 //			return false;
 //		}
-//		else
-//		{
-//			fRMotor.setPosition(0);
-//			this.drive(0.0, 0.0);
+//		else {
+//			timer.stop();
+//			timer.reset();
 //			return true;
 //		}
 //	}
-	//this class tells the robot to turn in a certain direction until it is a certain degree from its initial direction.
+	
+	public boolean driveDist(double mru)
+	{ 	
+		this.switchToArcade();
+		System.out.println("Encoder Position: "+rRMotor.getEncPosition());
+		System.out.println("Distance in Inches: "+rRMotor.getEncPosition()*circumference);
+		if(circumference * rLMotor.getEncPosition() < mru)
+		{
+//			double angle = gyro.getGyroAngle();
+//			double constant = gyro.getGyroConstant();
+			
+			this.drive(-.5, 0.0);
+			System.out.println("Driving");
+			return false;
+		}
+		else
+		{
+			rRMotor.setPosition(0);
+			this.drive(0.0, 0.0);
+			gyro.gyroReset();
+			return true;
+		}
+	}
+	//this class tells the robot to turn in a certain direction until it is a certain degree rLom its initial direction.
 	public boolean turn(double degrees, TurnDir turnDir)
 	{
 		this.switchToArcade();
 		
-		if(Math.abs(gyro.getGyroAngle()) < Math.abs(degrees)){
+		if(Math.abs(gyro.getGyroAngle()) < Math.abs(degrees-10)){
 			System.out.println("Turning");		
 			System.out.println(gyro.getGyroAngle());
 			
@@ -146,6 +155,7 @@ public class CANWheels
 	//this method drives the robot, based on the current drive mode. Configured to be easily compatible with the Joystick.
 	public void drive(double lS,double rS)
 	{
+		
 		switch(driveMode){
 		case TANK_DRIVE:
 			robot.tankDrive(-lS, -rS);
