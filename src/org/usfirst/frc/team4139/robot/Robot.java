@@ -23,6 +23,8 @@ public class Robot extends IterativeRobot
 	private CANClimber  climber;
 	private Controller  stick;
 	private Instruction currentInstruction;
+	private Ultrasonic sonic;
+	private Timer timer;
 //	private Camera      webcam;
 	
 	/**
@@ -32,51 +34,54 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit()
 	{
-		wheels = new CANWheels(4,1,2,3);
+		wheels = new CANWheels(4,1,3,2);
 //		webcam = new Camera();
 		climber = new CANClimber(0);
+		sonic = new Ultrasonic(0);
+		//timer = new Timer();
+		AUTO_MODE = 1;
 	}
 
 	@Override
 	public void autonomousInit()
 	{
-		
-		wheels.switchToArcade();
-		
+		wheels.start();
+		wheels.switchToTank();
+		//timer.reset();
+		//timer.start();
 		currentInstruction = new NoInstruction();
 		
 		instructions = new LinkedList<Instruction>();
-		instructions.add(new DriveInstruction(wheels, 1));
-		
-		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
-		instructions.add(new DriveInstruction(wheels, 1));
-		
-		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
-		instructions.add(new DriveInstruction(wheels, 1));
-		
-		instructions.add(new TurnInstruction(wheels, 90,TurnDir.left));
-		instructions.add(new DriveInstruction(wheels, 1));
+		instructions.add(new DriveInstruction(wheels, 2));
+		instructions.add(new TurnInstruction(wheels, 90, TurnDir.left)));
 	}
 	
 	/**
 	 * This function is called periodically during autonomous
 	 */
 	@Override
-	public synchronized void autonomousPeriodic()
+	// 1 second of timer is the equivalent of 7.167 feet or so we think so just try that
+	public void autonomousPeriodic()
 	{		
-		//first time will always return true
+//		System.out.println(timer.get());
+//		if(timer.get()<.965071392){
+//		wheels.drive(-.75, -.75);
+//		}
+//		
+//		else
+//			timer.stop();
 		if(currentInstruction.execute())
 		{
 			if(instructions.isEmpty())
 				currentInstruction = new NoInstruction();
-			else if(!instructions.isEmpty())
+			else
 				currentInstruction = instructions.pop();
 		}
 	}
-	
 	@Override
 	public void teleopInit()
 	{
+		wheels.start();
 		wheels.switchToTank();
 		stick = new Controller();
 		stick.setTank();
@@ -109,7 +114,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void testInit()
 	{
-
+		
 	}
 
 	/**
