@@ -9,13 +9,15 @@
 
 package org.usfirst.frc.team4139.robot.Sensors;
 
-import edu.wpi.first.wpilibj.vision.VisionThread;
+import java.util.ArrayList;
 
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.vision.VisionThread;
 
 public class Camera
 {
@@ -24,6 +26,7 @@ public class Camera
 	
 	private VisionThread visionThread;
 	private double centerX = 0.0;
+	private double distance = 0.0;
 	private final Object imgLock = new Object();
 	
 	public Camera()
@@ -33,13 +36,45 @@ public class Camera
 		
 		visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
 	        if (!pipeline.filterContoursOutput().isEmpty()) {
-	            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+	        	ArrayList<Rect> rects = new ArrayList<Rect>();
+	        	for(MatOfPoint point: pipeline.filterContoursOutput()){
+	        		Rect rect = Imgproc.boundingRect(point);
+	        		rects.add(rect);
+	        		System.out.println(rect.x);
+	        	}
+	        	
+	      
+	            //Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
 	            synchronized (imgLock) {
-	                this.centerX = r.x + (r.width / 2);
+	            	int averageX = averageX(rects);
+		        	this.distance = distanceBetween(rects, averageX);
+		          	this.centerX = averageX;
 	            }
 	        }
 	    });
 	    visionThread.start();
+	}
+	
+	public int distanceBetween(ArrayList<Rect> rects, int val){
+		int retVal = 2*IMG_WIDTH;
+		
+		for(Rect rect: rects){
+			int x = rect.x + rect.width;
+			
+			if(Math.abs(val-x) < retVal){
+				retVal = Math.abs(val-x);
+			}
+		}
+		return 2*retVal;
+	}
+	
+	
+	public int averageX(ArrayList<Rect> rects){
+		int total = 0;
+		for(Rect rect: rects){
+			total+=rect.x + rect.width/2;
+		}
+		return total/rects.size();
 	}
 	
 	/*
@@ -48,13 +83,15 @@ public class Camera
 	 */
 	public double getXPos()
 	{
-		double centerX;
+		//double centerX;
 		synchronized(imgLock)
 		{
 			System.out.println("Accessing cameraX instance field...");
-			centerX = this.centerX;
+			//centerX = this.centerX;
+
+			System.out.println("Distance between is " + this.distance);
+			System.out.println("Current centerX value: " + this.centerX);
 		}
-		System.out.println("Current centerX value: " + centerX);
 		return centerX;
 	}
 	
