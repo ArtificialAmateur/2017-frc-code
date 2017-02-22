@@ -17,6 +17,7 @@ import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.vision.VisionPipeline;
 import edu.wpi.first.wpilibj.vision.VisionThread;
 
 public class Camera
@@ -31,31 +32,31 @@ public class Camera
 	
 	public Camera()
 	{
-		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-		camera.setResolution(IMG_WIDTH, IMG_LENGTH);
-		
-		visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
-	        if (!pipeline.filterContoursOutput().isEmpty()) {
-	        	ArrayList<Rect> rects = new ArrayList<Rect>();
-	        	for(MatOfPoint point: pipeline.filterContoursOutput()){
-	        		Rect rect = Imgproc.boundingRect(point);
-	        		rects.add(rect);
-	        		System.out.println(rect.x);
-	        	}
-	        	
-	      
-	            //Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-	            synchronized (imgLock) {
-	            	int averageX = averageX(rects);
-		        	this.distance = distanceBetween(rects, averageX);
-		          	this.centerX = averageX;
-	            }
-	        }
-	    });
-	    visionThread.start();
+//		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+//		camera.setResolution(IMG_WIDTH, IMG_LENGTH);
+//		//The GripPipeline needs to be changed
+//		visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
+//	        if (!pipeline.filterContoursOutput().isEmpty()) {
+//	        	ArrayList<Rect> rects = new ArrayList<Rect>();
+//	        	for(MatOfPoint point: pipeline.filterContoursOutput()){
+//	        		Rect rect = Imgproc.boundingRect(point);
+//	        		rects.add(rect);
+//	        		System.out.println(rect.x);
+//	        	}
+//	        	
+//	      
+//	            //Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+//	            synchronized (imgLock) {
+//	            	int averageX = averageX(rects);
+//		        	this.distance = distanceBetween(rects, averageX);
+//		          	this.centerX = averageX;
+//	            }
+//	        }
+//	    });
+//	    visionThread.start();
 	}
 	
-	public int distanceBetween(ArrayList<Rect> rects, int val){
+	private int distanceBetween(ArrayList<Rect> rects, int val){
 		int retVal = 2*IMG_WIDTH;
 		
 		for(Rect rect: rects){
@@ -69,7 +70,7 @@ public class Camera
 	}
 	
 	
-	public int averageX(ArrayList<Rect> rects){
+	private int averageX(ArrayList<Rect> rects){
 		int total = 0;
 		for(Rect rect: rects){
 			total+=rect.x + rect.width/2;
@@ -80,6 +81,8 @@ public class Camera
 	/*
 	 * Should be called once every autonomousPeriodic call, I think?
 	 * Or once every tick in whatever setting this Camera class goes in.
+	 * 
+	 * Get center x between different contours 
 	 */
 	public double getXPos()
 	{
@@ -95,6 +98,10 @@ public class Camera
 		return centerX;
 	}
 	
+	public double getDistanceBetween(){
+		return this.distance;
+	}
+	
 	public VisionThread getVisionThread()
 	{
 		return visionThread;
@@ -103,5 +110,9 @@ public class Camera
 	public Object getImageLock()
 	{
 		return imgLock;
+	}
+	
+	public double getCenterXOfImage(){
+		return IMG_WIDTH / 2;
 	}
 }

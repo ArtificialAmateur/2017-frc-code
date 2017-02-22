@@ -12,7 +12,7 @@ public class DriveInstruction implements Instruction
 		feet = feetDrive;
 	}
 	@Override
-	public boolean execute() {
+	public boolean execute(double param) {
 		return wheels.driveDist(feet);
 	}
 }

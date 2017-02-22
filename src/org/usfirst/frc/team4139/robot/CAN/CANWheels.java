@@ -2,6 +2,7 @@ package org.usfirst.frc.team4139.robot.CAN;
 
 import org.usfirst.frc.team4139.robot.Sensors.Gyroscope;
 import org.usfirst.frc.team4139.robot.Utils.TurnDir;
+import org.usfirst.frc.team4139.robot.Sensors.Ultrasonic;
 
 import com.ctre.CANTalon;
 
@@ -32,6 +33,7 @@ public class CANWheels
 	
 	private Gyroscope gyro;
 	private Timer timer;
+//	private Ultrasonic sonic; //gota go faast
 	
 	public static final double circumference = (6*Math.PI);
 
@@ -39,6 +41,8 @@ public class CANWheels
 	{		
 		gyro = new Gyroscope();
 		gyro.gyroReset();
+		
+//		sonic = new Ultrasonic(0);
 				
 		fLMotor = new CANTalon(idFL);
 		rLMotor = new CANTalon(idRL);
@@ -62,10 +66,12 @@ public class CANWheels
 		rRMotor.setPosition(0);
 		timer.reset();
 	}
+
 	
-	public String testEnc(){
-		return "Velocity: " + rRMotor.getEncVelocity() + "\nPosition: " + rRMotor.getPosition();
-	}
+	//the ultrasonic is fucking garbage and is officially removed
+//	public String testSonic(){
+//		return "Distance: "+sonic.getSonicDist();
+//	}
 	
 	//This class tells the robot to drive for a certain amount of time (the parameter), at a speed of 0.3
 	public boolean driveDist(double mru)

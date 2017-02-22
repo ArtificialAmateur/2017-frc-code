@@ -15,7 +15,7 @@ public class TurnInstruction implements Instruction
 	}
 	
 	@Override
-	public boolean execute() {
+	public boolean execute(double param) {
 		return wheels.turn(turnAng, turnDir);
 	}
 

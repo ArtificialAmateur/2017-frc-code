@@ -23,8 +23,6 @@ public class Robot extends IterativeRobot
 	private CANClimber  climber;
 	private Controller  stick;
 	private Instruction currentInstruction;
-	private Ultrasonic sonic;
-	private Timer timer;
 //	private Camera      webcam;
 	
 	/**
@@ -35,10 +33,9 @@ public class Robot extends IterativeRobot
 	public void robotInit()
 	{
 		wheels = new CANWheels(4,1,3,2);
-//		webcam = new Camera();
+	//	webcam = new Camera();
 		climber = new CANClimber(0);
-		sonic = new Ultrasonic(0);
-		//timer = new Timer();
+	
 		AUTO_MODE = 1;
 	}
 
@@ -47,20 +44,18 @@ public class Robot extends IterativeRobot
 	{
 		wheels.start();
 		wheels.switchToTank();
-		//timer.reset();
-		//timer.start();
 		currentInstruction = new NoInstruction();
 		
 		instructions = new LinkedList<Instruction>();
-		instructions.add(new DriveInstruction(wheels, 2));
-		instructions.add(new TurnInstruction(wheels, 90, TurnDir.left)));
+		instructions.add(new DriveInstruction(wheels, 0.419));
+		instructions.add(new TurnInstruction(wheels, 90, TurnDir.left));
 	}
 	
 	/**
 	 * This function is called periodically during autonomous
 	 */
 	@Override
-	// 1 second of timer is the equivalent of 7.167 feet or so we think so just try that
+	// 1 second of timer is the equivalent of 4.777 feet or so we think so just try that
 	public void autonomousPeriodic()
 	{		
 //		System.out.println(timer.get());
@@ -70,7 +65,7 @@ public class Robot extends IterativeRobot
 //		
 //		else
 //			timer.stop();
-		if(currentInstruction.execute())
+		if(currentInstruction.execute(0.0))
 		{
 			if(instructions.isEmpty())
 				currentInstruction = new NoInstruction();
@@ -123,6 +118,11 @@ public class Robot extends IterativeRobot
 	@Override
 	public void testPeriodic()
 	{
+		wheels.switchToArcade();
+		stick = new Controller();
+		stick.setArcade();
+		wheels.drive(stick.getStickLeft(), stick.getStickRight());
+//		System.out.println(wheels.testSonic());
 //		webcam.getXPos();
 	}
 }
