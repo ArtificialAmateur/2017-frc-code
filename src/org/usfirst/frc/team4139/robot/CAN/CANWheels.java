@@ -27,13 +27,14 @@ public class CANWheels
 	
 	private RobotDrive robot;
 	
+	private boolean totalInvert;
 	private int driveMode;
 	public static final int TANK_DRIVE = 1;
 	public static final int ARCADE_DRIVE = 2;
 	
 	private Gyroscope gyro;
 	private Timer timer;
-//	private Ultrasonic sonic; //gota go faast
+	private Ultrasonic sonic; //gota go faast
 	
 	public static final double circumference = (6*Math.PI);
 
@@ -42,20 +43,21 @@ public class CANWheels
 		gyro = new Gyroscope();
 		gyro.gyroReset();
 		
-//		sonic = new Ultrasonic(0);
+		sonic = new Ultrasonic(0);
 				
 		fLMotor = new CANTalon(idFL);
 		rLMotor = new CANTalon(idRL);
 		fRMotor = new CANTalon(idFR);
 		rRMotor = new CANTalon(idRR);
 		
-		rRMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-		rRMotor.reverseSensor(true);
-		rRMotor.configEncoderCodesPerRev(1040);
-		rRMotor.setPosition(0);
+//		rRMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+//		rRMotor.reverseSensor(true);
+//		rRMotor.configEncoderCodesPerRev(1040);
+//		rRMotor.setPosition(0);
 		
 		robot = new RobotDrive(fLMotor,rLMotor,fRMotor,rRMotor);
 		driveMode = TANK_DRIVE;
+		totalInvert = false;
 		
 		timer = new Timer();
 		timer.reset();
@@ -66,9 +68,9 @@ public class CANWheels
 		rRMotor.setPosition(0);
 		timer.reset();
 	}
-/*
-	//This class tells the robot to drive for a certain amount of time (the parameter), at a speed of 0.3
-	public boolean driveDist(double mru)
+
+	//This class tells the robot to drive for a certain amount of time (the parameter), at a speed of 0.5
+	public boolean driveTime(double mru)
 	{ 	
 		this.switchToArcade();
 		if(timer.get() == 0){
@@ -111,7 +113,7 @@ public class CANWheels
 			return true;
 		}
 	}
-	*/
+	
 	//this class tells the robot to turn in a certain direction until it is a certain degree rLom its initial direction.
 	public boolean turn(double degrees, TurnDir turnDir)
 	{
@@ -138,6 +140,10 @@ public class CANWheels
 		}
 	}
 	
+	public void invertToggle(){
+		totalInvert = !totalInvert;
+	}
+	
 	//switches to TankDrive
 	public void switchToTank()
 	{
@@ -153,16 +159,29 @@ public class CANWheels
 	//this method drives the robot, based on the current drive mode. Configured to be easily compatible with the Joystick.
 	public void drive(double lS,double rS)
 	{
-		
-		switch(driveMode){
-		case TANK_DRIVE:
-			robot.tankDrive(-lS, -rS);
-			break;
-		case ARCADE_DRIVE:
-			robot.arcadeDrive(-lS, -rS);
-			break;
-		default:
-			robot.tankDrive(-lS, -rS);
+		if(totalInvert){
+			switch(driveMode){
+			case TANK_DRIVE:
+				robot.tankDrive(rS, lS);
+				break;
+			case ARCADE_DRIVE:
+				robot.arcadeDrive(lS, rS);
+				break;
+			default:
+				robot.tankDrive(rS, lS);
+			}
+		}
+		else{
+			switch(driveMode){
+			case TANK_DRIVE:
+				robot.tankDrive(-lS, -rS);
+				break;
+			case ARCADE_DRIVE:
+				robot.arcadeDrive(-lS, -rS);
+				break;
+			default:
+				robot.tankDrive(-lS, -rS);
+			}
 		}
 	}
 	
@@ -172,36 +191,6 @@ public class CANWheels
 		}
 		else{
 			this.switchToTank();
-		}
-	}
-	//this method inverts a motor of choice.
-	public void setInverted(int motorvalue, boolean bool)
-	{
-		if(bool)
-		{
-			switch(motorvalue)
-			{
-			case 0: fLMotor.setInverted(true);
-				break;
-			case 1: rLMotor.setInverted(true);
-				break;
-			case 2: fRMotor.setInverted(true);
-				break;
-			case 3: rRMotor.setInverted(true);
-			}
-		}
-		else
-		{
-			switch(motorvalue)
-			{
-			case 0: fLMotor.setInverted(false);
-			break;
-			case 1: rLMotor.setInverted(false);
-			break;
-			case 2: fRMotor.setInverted(false);
-			break;
-			case 3: rRMotor.setInverted(false);
-			}
 		}
 	}
 }

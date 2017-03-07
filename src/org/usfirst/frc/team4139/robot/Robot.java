@@ -18,7 +18,11 @@ public class Robot extends IterativeRobot
 {
 	private LinkedList<Instruction> instructions;
 	// Initialize variables here
-	private static int AUTO_MODE;
+	/*
+	 * AUTO_MODE is a variable that corresponds to our starting position. Facing the field from the pit,
+	 * 1 is the left, 2 is the center, 3 is the right.
+	 */ 
+	private static int AUTO_MODE = 1;
 	private CANWheels   wheels;
 	private CANClimber  climber;
 	private Controller  stick;
@@ -44,10 +48,18 @@ public class Robot extends IterativeRobot
 	{
 		wheels.start();
 		currentInstruction = new NoInstruction();
-		
 		instructions = new LinkedList<Instruction>();
-		instructions.add(new DriveInstruction(wheels, 0.419));
-		instructions.add(new TurnInstruction(wheels, 90, TurnDir.left));
+		
+		switch(AUTO_MODE){
+		case 1:
+			instructions.add(new TimedDriveInstruction(wheels,1.0));
+			instructions.add(new TurnInstruction(wheels, 90, TurnDir.left));
+			instructions.add(new TimedDriveInstruction(wheels,.75));
+			instructions.add(new TurnInstruction(wheels, 90, TurnDir.right));
+			break;
+		case 2:
+		case 3:
+		}
 	}
 	
 	/**
@@ -83,17 +95,19 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopPeriodic()
 	{
-		wheels.drive(stick.getStickLeft(), stick.getStickRight());
+		
 		if(stick.getButtonA())
-		{
 			climber.toggle();
-		}
-		if(stick.getButtonX()){
+		
+		if(stick.getButtonX())
 			wheels.toggleDriveMode();
-		}
-		if(stick.getButtonY()){
+		
+		if(stick.getButtonY())
 			instructions.add(new TurnInstruction(wheels, 180, TurnDir.left));
-		}
+		
+		if(stick.getButtonB())
+			wheels.invertToggle();
+		
 		if(currentInstruction.execute(0.0))
 		{
 			if(instructions.isEmpty())
@@ -101,8 +115,8 @@ public class Robot extends IterativeRobot
 			else
 				currentInstruction = instructions.pop();
 		}
-			// Wait do I need a getDrive method to figure out if we're in tank or arcade?
-			// Also, I believe we need the inverted control method to be in Wheels.
+		
+		wheels.drive(stick.getStickLeft(), stick.getStickRight());
 		climber.climb();
 	}
 
@@ -118,12 +132,7 @@ public class Robot extends IterativeRobot
 	@Override
 	public void testPeriodic()
 	{
-		wheels.switchToArcade();
-		stick = new Controller();
-		stick.setArcade();
-		wheels.drive(stick.getStickLeft(), stick.getStickRight());
-//		System.out.println(wheels.testSonic());
-//		webcam.getXPos();
+		
 	}
 }
 
