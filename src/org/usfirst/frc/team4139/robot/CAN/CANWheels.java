@@ -66,13 +66,7 @@ public class CANWheels
 		rRMotor.setPosition(0);
 		timer.reset();
 	}
-
-	
-	//the ultrasonic is fucking garbage and is officially removed
-//	public String testSonic(){
-//		return "Distance: "+sonic.getSonicDist();
-//	}
-	
+/*
 	//This class tells the robot to drive for a certain amount of time (the parameter), at a speed of 0.3
 	public boolean driveDist(double mru)
 	{ 	
@@ -95,28 +89,29 @@ public class CANWheels
 		}
 	}
 	
-//	public boolean driveDist(double mru)
-//	{ 	
-//		this.switchToArcade();
-//		System.out.println("Encoder Position: "+rRMotor.getEncPosition());
-//		System.out.println("Distance in Inches: "+rRMotor.getEncPosition()*circumference);
-//		if(circumference * rLMotor.getEncPosition() < mru)
-//		{
-//			double angle = gyro.getGyroAngle();
-//			double constant = gyro.getGyroConstant();
-//			
-//			this.drive(-.5, 0.0);
-//			System.out.println("Driving");
-//			return false;
-//		}
-//		else
-//		{
-//			rRMotor.setPosition(0);
-//			this.drive(0.0, 0.0);
-//			gyro.gyroReset();
-//			return true;
-//		}
-//	}
+	public boolean driveDist(double mru)
+	{ 	
+		this.switchToArcade();
+		System.out.println("Encoder Position: "+rRMotor.getEncPosition());
+		System.out.println("Distance in Inches: "+rRMotor.getEncPosition()*circumference);
+		if(circumference * rLMotor.getEncPosition() < mru)
+		{
+			double angle = gyro.getGyroAngle();
+			double constant = gyro.getGyroConstant();
+			
+			this.drive(-.5, 0.0);
+			System.out.println("Driving");
+			return false;
+		}
+		else
+		{
+			rRMotor.setPosition(0);
+			this.drive(0.0, 0.0);
+			gyro.gyroReset();
+			return true;
+		}
+	}
+	*/
 	//this class tells the robot to turn in a certain direction until it is a certain degree rLom its initial direction.
 	public boolean turn(double degrees, TurnDir turnDir)
 	{
@@ -171,6 +166,14 @@ public class CANWheels
 		}
 	}
 	
+	public void toggleDriveMode(){
+		if(driveMode == TANK_DRIVE){
+			this.switchToArcade();
+		}
+		else{
+			this.switchToTank();
+		}
+	}
 	//this method inverts a motor of choice.
 	public void setInverted(int motorvalue, boolean bool)
 	{

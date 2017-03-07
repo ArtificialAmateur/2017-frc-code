@@ -43,7 +43,6 @@ public class Robot extends IterativeRobot
 	public void autonomousInit()
 	{
 		wheels.start();
-		wheels.switchToTank();
 		currentInstruction = new NoInstruction();
 		
 		instructions = new LinkedList<Instruction>();
@@ -57,14 +56,7 @@ public class Robot extends IterativeRobot
 	@Override
 	// 1 second of timer is the equivalent of 4.777 feet or so we think so just try that
 	public void autonomousPeriodic()
-	{		
-//		System.out.println(timer.get());
-//		if(timer.get()<.965071392){
-//		wheels.drive(-.75, -.75);
-//		}
-//		
-//		else
-//			timer.stop();
+	{
 		if(currentInstruction.execute(0.0))
 		{
 			if(instructions.isEmpty())
@@ -80,6 +72,9 @@ public class Robot extends IterativeRobot
 		wheels.switchToTank();
 		stick = new Controller();
 		stick.setTank();
+		currentInstruction = new NoInstruction();
+		
+		instructions = new LinkedList<Instruction>();
 	}
 
 	/**
@@ -94,16 +89,21 @@ public class Robot extends IterativeRobot
 			climber.toggle();
 		}
 		if(stick.getButtonX()){
-			wheels.switchToArcade();
-			stick.setArcade();
+			wheels.toggleDriveMode();
 		}
-		if(stick.getButtonB()){
-			wheels.switchToTank();
-			stick.setTank();
+		if(stick.getButtonY()){
+			instructions.add(new TurnInstruction(wheels, 180, TurnDir.left));
 		}
-		
+		if(currentInstruction.execute(0.0))
+		{
+			if(instructions.isEmpty())
+				currentInstruction = new NoInstruction();
+			else
+				currentInstruction = instructions.pop();
+		}
+			// Wait do I need a getDrive method to figure out if we're in tank or arcade?
+			// Also, I believe we need the inverted control method to be in Wheels.
 		climber.climb();
-		
 	}
 
 	@Override
