@@ -98,9 +98,6 @@ public class CANWheels
 		System.out.println("Distance in Inches: "+rRMotor.getEncPosition()*circumference);
 		if(circumference * rLMotor.getEncPosition() < mru)
 		{
-			double angle = gyro.getGyroAngle();
-			double constant = gyro.getGyroConstant();
-			
 			this.drive(-.5, 0.0);
 			System.out.println("Driving");
 			return false;

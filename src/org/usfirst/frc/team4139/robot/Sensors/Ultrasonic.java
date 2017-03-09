@@ -6,7 +6,7 @@ public class Ultrasonic
 {
 	private AnalogInput sonic;
 	private double currentDist;
-	public static final double VOLTS_TO_DISTANCE = 102.04; // factor to convert sensor values to a distance in inches
+	public static final double VOLTS_TO_DISTANCE = 0.00922706; // factor to convert sensor values to a distance in inches
 	
 	public Ultrasonic(int input)
 	{
@@ -16,7 +16,7 @@ public class Ultrasonic
 	// Returns the ultrasonic range in inches.
 	public double getSonicDist()
 	{
-		currentDist = sonic.getVoltage() * VOLTS_TO_DISTANCE;
+		currentDist = sonic.getVoltage() / VOLTS_TO_DISTANCE;
 		return currentDist;
 	}
 	
