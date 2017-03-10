@@ -59,8 +59,10 @@ public class Robot extends IterativeRobot
 //			instructions.add(new TimedDriveInstruction(wheels, .75));
 //			break;
 //		case 2:
-			instructions.add(new TimedSensorDriveInstruction(wheels, 10));
-			instructions.add(new TimedDriveInstruction(wheels, 2));
+			instructions.add(new TimedSensorDriveInstruction(wheels, 5.0));
+			instructions.add(new WaitInstruction(wheels,0.5));
+			instructions.add(new TimedDriveInstruction(wheels, 0.5));
+//			break;
 //		case 3:
 //			instructions.add(new TimedDriveInstruction(wheels, 1.0));
 //			instructions.add(new TurnInstruction(wheels, 90, TurnDir.right));
@@ -113,19 +115,7 @@ public class Robot extends IterativeRobot
 		if(stick.getButtonX())
 			wheels.toggleDriveMode();
 		
-		if(stick.getButtonY())
-			instructions.add(new TurnInstruction(wheels, 180, TurnDir.left));
-		
-		if(stick.getButtonB())
-			wheels.invertToggle();
-		
-		if(currentInstruction.execute(0.0))
-		{
-			if(instructions.isEmpty())
-				currentInstruction = new NoInstruction();
-			else
-				currentInstruction = instructions.pop();
-		}
+
 		
 		wheels.drive(stick.getStickLeft(), stick.getStickRight());
 		climber.climb();
