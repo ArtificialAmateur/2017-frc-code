@@ -91,25 +91,48 @@ public class CANWheels
 		}
 	}
 	
-	public boolean driveDist(double mru)
+	//This class tells the robot to drive for a certain amount of time (the parameter), at a speed of 0.5
+	public boolean driveTimeSensor(double mru)
 	{ 	
 		this.switchToArcade();
-		System.out.println("Encoder Position: "+rRMotor.getEncPosition());
-		System.out.println("Distance in Inches: "+rRMotor.getEncPosition()*circumference);
-		if(circumference * rLMotor.getEncPosition() < mru)
-		{
-			this.drive(-.5, 0.0);
+		if(timer.get() == 0){
+			timer.start();
+		}
+		
+		System.out.println(timer.get());
+		
+		if(timer.get() < mru && sonic.getSonicDist() > 8.0){
+			this.drive(-.5,0.0);
 			System.out.println("Driving");
+			sonic.printSonicDist();
 			return false;
 		}
-		else
-		{
-			rRMotor.setPosition(0);
-			this.drive(0.0, 0.0);
-			gyro.gyroReset();
+		else {
+			timer.stop();
+			timer.reset();
 			return true;
 		}
 	}
+	
+//	public boolean driveDist(double mru)
+//	{ 	
+//		this.switchToArcade();
+//		System.out.println("Encoder Position: "+rRMotor.getEncPosition());
+//		System.out.println("Distance in Inches: "+rRMotor.getEncPosition()*circumference);
+//		if(circumference * rLMotor.getEncPosition() < mru)
+//		{
+//			this.drive(-.5, 0.0);
+//			System.out.println("Driving");
+//			return false;
+//		}
+//		else
+//		{
+//			rRMotor.setPosition(0);
+//			this.drive(0.0, 0.0);
+//			gyro.gyroReset();
+//			return true;
+//		}
+//	}
 	
 	//this class tells the robot to turn in a certain direction until it is a certain degree rLom its initial direction.
 	public boolean turn(double degrees, TurnDir turnDir)

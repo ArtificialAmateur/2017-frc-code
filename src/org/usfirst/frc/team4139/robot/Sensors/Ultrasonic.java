@@ -22,6 +22,6 @@ public class Ultrasonic
 	
 	public void printSonicDist()
 	{
-		System.out.println("Ultrasonic: "+sonic.getValue()+"in.");
+		System.out.println("Ultrasonic: "+getSonicDist()+"in.");
 	}
 }

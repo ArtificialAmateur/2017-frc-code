@@ -22,12 +22,12 @@ public class Robot extends IterativeRobot
 	 * AUTO_MODE is a variable that corresponds to our starting position. Facing the field from the pit,
 	 * 1 is the left, 2 is the center, 3 is the right.
 	 */ 
-	private static int AUTO_MODE = 1;
+	private static int AUTO_MODE = 2;
 	private CANWheels   wheels;
 	private CANClimber  climber;
 	private Controller  stick;
 	private Instruction currentInstruction;
-	private Camera      webcam;
+	private CameraS      webcam;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -37,10 +37,8 @@ public class Robot extends IterativeRobot
 	public void robotInit()
 	{
 		wheels = new CANWheels(4,1,3,2);
-		webcam = new Camera();
+		webcam = new CameraS();
 		climber = new CANClimber(0);
-	
-		AUTO_MODE = 1;
 	}
 
 	@Override
@@ -50,28 +48,29 @@ public class Robot extends IterativeRobot
 		currentInstruction = new NoInstruction();
 		instructions = new LinkedList<Instruction>();
 		
-		switch(AUTO_MODE){
-		case 1:
-			instructions.add(new TimedDriveInstruction(wheels, 1.0));
-			instructions.add(new TurnInstruction(wheels, 90, TurnDir.left));
-			instructions.add(new TimedDriveInstruction(wheels, .75));
-			instructions.add(new TurnInstruction(wheels, 90, TurnDir.right));
-			instructions.add(new TimedDriveInstruction(wheels, .75));
-			instructions.add(new TurnInstruction(wheels, 45, TurnDir.left));
-			instructions.add(new TimedDriveInstruction(wheels, .75));
-			break;
-		case 2:
+//		switch(AUTO_MODE){
+//		case 1:
+//			instructions.add(new TimedDriveInstruction(wheels, 1.0));
+//			instructions.add(new TurnInstruction(wheels, 90, TurnDir.left));
+//			instructions.add(new TimedDriveInstruction(wheels, .75));
+//			instructions.add(new TurnInstruction(wheels, 90, TurnDir.right));
+//			instructions.add(new TimedDriveInstruction(wheels, .75));
+//			instructions.add(new TurnInstruction(wheels, 45, TurnDir.left));
+//			instructions.add(new TimedDriveInstruction(wheels, .75));
+//			break;
+//		case 2:
+			instructions.add(new TimedSensorDriveInstruction(wheels, 10));
 			instructions.add(new TimedDriveInstruction(wheels, 2));
-		case 3:
-			instructions.add(new TimedDriveInstruction(wheels, 1.0));
-			instructions.add(new TurnInstruction(wheels, 90, TurnDir.right));
-			instructions.add(new TimedDriveInstruction(wheels, .75));
-			instructions.add(new TurnInstruction(wheels, 90, TurnDir.left));
-			instructions.add(new TimedDriveInstruction(wheels, .75));
-			instructions.add(new TurnInstruction(wheels, 45, TurnDir.right));
-			instructions.add(new TimedDriveInstruction(wheels, .75));
-			break;
-		}
+//		case 3:
+//			instructions.add(new TimedDriveInstruction(wheels, 1.0));
+//			instructions.add(new TurnInstruction(wheels, 90, TurnDir.right));
+//			instructions.add(new TimedDriveInstruction(wheels, .75));
+//			instructions.add(new TurnInstruction(wheels, 90, TurnDir.left));
+//			instructions.add(new TimedDriveInstruction(wheels, .75));
+//			instructions.add(new TurnInstruction(wheels, 45, TurnDir.right));
+//			instructions.add(new TimedDriveInstruction(wheels, .75));
+//			break;
+//		}
 	}
 	
 	/**
