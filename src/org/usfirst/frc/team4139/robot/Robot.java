@@ -17,19 +17,16 @@ import org.usfirst.frc.team4139.robot.Utils.*;
 public class Robot extends IterativeRobot
 {
 	private LinkedList<Instruction> instructions;
-	// Initialize variables here
-	/*
-	 * AUTO_MODE is a variable that corresponds to our starting position. Facing the field from the pit,
-	 * 1 is the left, 2 is the center, 3 is the right.
+	/* Initialize variables here
+	   AUTO_MODE is a variable that corresponds to our starting position. Facing the field from the pit,
+	   1 is the left, 2 is the center, 3 is the right.
 	 */ 
 	private static int AUTO_MODE = 2;
 	private CANWheels   wheels;
 	private CANClimber  climber;
 	private Controller  stick;
 	private Instruction currentInstruction;
-	private Timer climbtimer;
-//	private CameraS      webcam;
-	
+	private Timer climbtimer;	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -39,7 +36,6 @@ public class Robot extends IterativeRobot
 	{
 		CameraServer.getInstance().startAutomaticCapture();
 		wheels = new CANWheels(4,1,3,2);
-//		webcam = new CameraS();
 		climber = new CANClimber(0);
 	}
 
