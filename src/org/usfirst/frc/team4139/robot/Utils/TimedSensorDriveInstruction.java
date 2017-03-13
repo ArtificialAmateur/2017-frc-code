@@ -2,8 +2,8 @@ package org.usfirst.frc.team4139.robot.Utils;
 
 import org.usfirst.frc.team4139.robot.CAN.CANWheels;
 
-public class TimedSensorDriveInstruction implements Instruction {
-
+public class TimedSensorDriveInstruction implements Instruction
+{
 	private CANWheels wheels;
 	private double seconds;
 	public TimedSensorDriveInstruction(CANWheels cWheels, double driveTime)
@@ -12,7 +12,8 @@ public class TimedSensorDriveInstruction implements Instruction {
 		seconds = driveTime;
 	}
 	@Override
-	public boolean execute(double param) {
+	public boolean execute(double param)
+	{
 		return wheels.driveTimeSensor(seconds);
 	}
 }

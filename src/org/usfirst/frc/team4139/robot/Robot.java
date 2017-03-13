@@ -50,31 +50,32 @@ public class Robot extends IterativeRobot
 		currentInstruction = new NoInstruction();
 		instructions = new LinkedList<Instruction>();
 		
-//		switch(AUTO_MODE){
-//		case 1:
-//			instructions.add(new TimedDriveInstruction(wheels, 1.0));
-//			instructions.add(new TurnInstruction(wheels, 90, TurnDir.left));
-//			instructions.add(new TimedDriveInstruction(wheels, .75));
-//			instructions.add(new TurnInstruction(wheels, 90, TurnDir.right));
-//			instructions.add(new TimedDriveInstruction(wheels, .75));
-//			instructions.add(new TurnInstruction(wheels, 45, TurnDir.left));
-//			instructions.add(new TimedDriveInstruction(wheels, .75));
-//			break;
-//		case 2:
+		switch(AUTO_MODE)
+		{
+/*		case 1:
+ 			instructions.add(new TimedDriveInstruction(wheels, 1.0));
+ 			instructions.add(new TurnInstruction(wheels, 90, TurnDir.left));
+ 			instructions.add(new TimedDriveInstruction(wheels, .75));
+ 			instructions.add(new TurnInstruction(wheels, 90, TurnDir.right));
+ 			instructions.add(new TimedDriveInstruction(wheels, .75));
+ 			instructions.add(new TurnInstruction(wheels, 45, TurnDir.left));
+ 			instructions.add(new TimedDriveInstruction(wheels, .75));
+ 			break;
+ */		case 2:
 			instructions.add(new TimedSensorDriveInstruction(wheels, 5.0));
 			instructions.add(new WaitInstruction(wheels,0.5));
 			instructions.add(new TimedDriveInstruction(wheels, 0.5));
-//			break;
-//		case 3:
-//			instructions.add(new TimedDriveInstruction(wheels, 1.0));
-//			instructions.add(new TurnInstruction(wheels, 90, TurnDir.right));
-//			instructions.add(new TimedDriveInstruction(wheels, .75));
-//			instructions.add(new TurnInstruction(wheels, 90, TurnDir.left));
-//			instructions.add(new TimedDriveInstruction(wheels, .75));
-//			instructions.add(new TurnInstruction(wheels, 45, TurnDir.right));
-//			instructions.add(new TimedDriveInstruction(wheels, .75));
-//			break;
-//		}
+			break;
+/*		case 3:
+			instructions.add(new TimedDriveInstruction(wheels, 1.0));
+			instructions.add(new TurnInstruction(wheels, 90, TurnDir.right));
+			instructions.add(new TimedDriveInstruction(wheels, .75));
+			instructions.add(new TurnInstruction(wheels, 90, TurnDir.left));
+			instructions.add(new TimedDriveInstruction(wheels, .75));
+			instructions.add(new TurnInstruction(wheels, 45, TurnDir.right));
+			instructions.add(new TimedDriveInstruction(wheels, .75));
+			break;
+*/		}
 	}
 	
 	/**
@@ -103,7 +104,6 @@ public class Robot extends IterativeRobot
 		stick = new Controller();
 		stick.setTank();
 		currentInstruction = new NoInstruction();
-		
 		instructions = new LinkedList<Instruction>();
 	}
 
@@ -114,16 +114,13 @@ public class Robot extends IterativeRobot
 	public void teleopPeriodic()
 	{
 		
-		if(stick.getButtonA() && climbtimer.hasPeriodPassed(0.5)){
+		if(stick.getButtonA() && climbtimer.hasPeriodPassed(0.5))
+		{
 			climber.toggle();
 			climbtimer.reset();
 		}
-		
 		if(stick.getButtonX())
 			wheels.toggleDriveMode();
-		
-
-		
 		wheels.drive(stick.getStickLeft(), stick.getStickRight());
 		climber.climb();
 	}

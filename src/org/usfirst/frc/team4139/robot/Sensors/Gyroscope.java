@@ -39,7 +39,8 @@ public class Gyroscope
 	{
 		constant = num;
 	}
-	public void calibrate(){
+	public void calibrate()
+	{
 		gyro.calibrate();
 	}
 }

@@ -1,5 +1,4 @@
 package org.usfirst.frc.team4139.robot.CAN;
-
 import org.usfirst.frc.team4139.robot.Sensors.Gyroscope;
 import org.usfirst.frc.team4139.robot.Utils.TurnDir;
 import org.usfirst.frc.team4139.robot.Sensors.Ultrasonic;
@@ -15,7 +14,6 @@ import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
-
 
 public class CANWheels
 {
@@ -49,11 +47,11 @@ public class CANWheels
 		fRMotor = new CANTalon(idFR);
 		rRMotor = new CANTalon(idRR);
 		
-//		rRMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
-//		rRMotor.reverseSensor(true);
-//		rRMotor.configEncoderCodesPerRev(1040);
-//		rRMotor.setPosition(0);
-		
+/**		rRMotor.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Relative);
+ *		rRMotor.reverseSensor(true);
+ *		rRMotor.configEncoderCodesPerRev(1040);
+ *		rRMotor.setPosition(0);
+ */		
 		robot = new RobotDrive(fLMotor,rLMotor,fRMotor,rRMotor);
 		driveMode = TANK_DRIVE;
 		
@@ -61,20 +59,23 @@ public class CANWheels
 		timer.reset();
 	}
 	
-	public void start(){
+	public void start()
+	{
 		gyro.gyroReset();
 		timer.reset();
 	}
 
-	public boolean wait(double seconds){
+	public boolean wait(double seconds)
+	{
 		if(timer.get() == 0.0)
 			timer.start();
-		
-		if(timer.get() < seconds){
+		if(timer.get() < seconds)
+		{
 			System.out.println("Waiting...");
 			return false;
 		}
-		else{
+		else
+		{
 			timer.stop();
 			timer.reset();
 			return true;
@@ -85,18 +86,21 @@ public class CANWheels
 	public boolean driveTime(double mru)
 	{ 	
 		this.switchToArcade();
-		if(timer.get() == 0){
+		if(timer.get() == 0)
+		{
 			timer.start();
 		}
 		
 		System.out.println(timer.get());
 		
-		if(timer.get() < mru){
+		if(timer.get() < mru)
+		{
 			this.drive(-.5,0.0);
 			System.out.println("Driving");
 			return false;
 		}
-		else {
+		else
+		{
 			timer.stop();
 			timer.reset();
 			return true;
@@ -107,20 +111,23 @@ public class CANWheels
 	public boolean driveTimeSensor(double mru)
 	{ 	
 		this.switchToArcade();
-		if(timer.get() == 0){
+		if(timer.get() == 0)
+		{
 			timer.start();
 		}
 		
 		System.out.println(timer.get());
 		
-		if(timer.get() < mru && sonic.getSonicDist() > 31.0){
+		if(timer.get() < mru && sonic.getSonicDist() > 31.0)
+		{
 			this.drive(-.5,0.0);
 			System.out.println("Driving");
 			System.out.println("Sonar: "+ sonic.getSonicDist());
 			sonic.printSonicDist();
 			return false;
 		}
-		else {
+		else
+		{
 			timer.stop();
 			timer.reset();
 			return true;
@@ -132,7 +139,8 @@ public class CANWheels
 	{
 		this.switchToArcade();
 		
-		if(Math.abs(gyro.getGyroAngle()) < Math.abs(degrees-10)){
+		if(Math.abs(gyro.getGyroAngle()) < Math.abs(degrees-10))
+		{
 			System.out.println("Turning");		
 			System.out.println(gyro.getGyroAngle());
 			
@@ -146,7 +154,8 @@ public class CANWheels
 			}	
 			return false;
 		}
-		else {
+		else
+		{
 			gyro.gyroReset();
 			this.drive(0.0, 0.0);
 			return true;
@@ -168,7 +177,8 @@ public class CANWheels
 	//this method drives the robot, based on the current drive mode. Configured to be easily compatible with the Joystick.
 	public void drive(double lS,double rS)
 	{
-			switch(driveMode){
+		switch(driveMode)
+		{
 			case TANK_DRIVE:
 				robot.tankDrive(-lS, -rS);
 				break;
@@ -180,12 +190,11 @@ public class CANWheels
 		}
 	}
 	
-	public void toggleDriveMode(){
-		if(driveMode == TANK_DRIVE){
+	public void toggleDriveMode()
+	{
+		if(driveMode == TANK_DRIVE)
 			this.switchToArcade();
-		}
-		else{
+		else
 			this.switchToTank();
-		}
 	}
 }

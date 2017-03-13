@@ -32,28 +32,32 @@ public class Camera
 	
 	public Camera()
 	{
-//		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-//		camera.setResolution(IMG_WIDTH, IMG_LENGTH);
-//		//The GripPipeline needs to be changed
-//		visionThread = new VisionThread(camera, new GripPipeline(), pipeline -> {
-//	        if (!pipeline.filterContoursOutput().isEmpty()) {
-//	        	ArrayList<Rect> rects = new ArrayList<Rect>();
-//	        	for(MatOfPoint point: pipeline.filterContoursOutput()){
-//	        		Rect rect = Imgproc.boundingRect(point);
-//	        		rects.add(rect);
-//	        		System.out.println(rect.x);
-//	        	}
-//	        	
-//	      
-//	            //Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-//	            synchronized (imgLock) {
-//	            	int averageX = averageX(rects);
-//		        	this.distance = distanceBetween(rects, averageX);
-//		          	this.centerX = averageX;
-//	            }
-//	        }
-//	    });
-//	    visionThread.start();
+		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setResolution(IMG_WIDTH, IMG_LENGTH);
+		//The GripPipeline needs to be changed
+		visionThread = new VisionThread(camera, new GripPipeline(), pipeline ->
+		{
+	        if (!pipeline.filterContoursOutput().isEmpty())
+	        {
+	        	ArrayList<Rect> rects = new ArrayList<Rect>();
+	        	for(MatOfPoint point: pipeline.filterContoursOutput())
+				{
+	        		Rect rect = Imgproc.boundingRect(point);
+	        		rects.add(rect);
+	        		System.out.println(rect.x);
+	        	}
+	        	
+	      
+	            //Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+	            synchronized (imgLock)
+				{
+	            	int averageX = averageX(rects);
+		        	this.distance = distanceBetween(rects, averageX);
+		          	this.centerX = averageX;
+	            }
+	        }
+	    });
+	    visionThread.start();
 	}
 	
 	private int distanceBetween(ArrayList<Rect> rects, int val){
@@ -98,7 +102,8 @@ public class Camera
 		return centerX;
 	}
 	
-	public double getDistanceBetween(){
+	public double getDistanceBetween()
+	{
 		return this.distance;
 	}
 	
@@ -112,7 +117,8 @@ public class Camera
 		return imgLock;
 	}
 	
-	public double getCenterXOfImage(){
+	public double getCenterXOfImage()
+	{
 		return IMG_WIDTH / 2;
 	}
 }

@@ -7,6 +7,7 @@ public class TurnInstruction implements Instruction
 	private double turnAng;
 	private CANWheels wheels;
 	private TurnDir turnDir;
+	
 	public TurnInstruction(CANWheels cWheels, double angle, TurnDir turnDir)
 	{
 		turnAng = angle;
@@ -15,7 +16,8 @@ public class TurnInstruction implements Instruction
 	}
 	
 	@Override
-	public boolean execute(double param) {
+	public boolean execute(double param)
+	{
 		return wheels.turn(turnAng, turnDir);
 	}
 
