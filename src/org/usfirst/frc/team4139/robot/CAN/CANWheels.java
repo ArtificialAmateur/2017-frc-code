@@ -113,9 +113,10 @@ public class CANWheels
 		
 		System.out.println(timer.get());
 		
-		if(timer.get() < mru && sonic.getSonicDist() > 8.0){
+		if(timer.get() < mru && sonic.getSonicDist() > 31.0){
 			this.drive(-.5,0.0);
 			System.out.println("Driving");
+			System.out.println("Sonar: "+ sonic.getSonicDist());
 			sonic.printSonicDist();
 			return false;
 		}

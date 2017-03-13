@@ -23,14 +23,14 @@ public class CANClimber
 	public void toggle()
 	{
 		isClimbing=!isClimbing;
-		Timer.delay(0.75);
+		Timer.delay(0.5);
 	}
 	//climb() is meant to be called in every teleopPeriodic() call.
 	public void climb()
 	{
 		if(isClimbing)
 		{
-			winder.set(-1.0);
+			winder.set(1.0);
 		}
 		else
 		{

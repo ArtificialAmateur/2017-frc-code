@@ -27,7 +27,8 @@ public class Robot extends IterativeRobot
 	private CANClimber  climber;
 	private Controller  stick;
 	private Instruction currentInstruction;
-	private CameraS      webcam;
+	private Timer climbtimer;
+//	private CameraS      webcam;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -36,8 +37,9 @@ public class Robot extends IterativeRobot
 	@Override
 	public void robotInit()
 	{
+		CameraServer.getInstance().startAutomaticCapture();
 		wheels = new CANWheels(4,1,3,2);
-		webcam = new CameraS();
+//		webcam = new CameraS();
 		climber = new CANClimber(0);
 	}
 
@@ -93,6 +95,9 @@ public class Robot extends IterativeRobot
 	@Override
 	public void teleopInit()
 	{
+		climbtimer = new Timer();
+		climbtimer.reset();
+		climbtimer.start();
 		wheels.start();
 		wheels.switchToTank();
 		stick = new Controller();
@@ -109,8 +114,10 @@ public class Robot extends IterativeRobot
 	public void teleopPeriodic()
 	{
 		
-		if(stick.getButtonA())
+		if(stick.getButtonA() && climbtimer.hasPeriodPassed(0.5)){
 			climber.toggle();
+			climbtimer.reset();
+		}
 		
 		if(stick.getButtonX())
 			wheels.toggleDriveMode();
