@@ -6,7 +6,6 @@ import org.usfirst.frc.team4139.robot.Sensors.Ultrasonic;
 import com.ctre.CANTalon;
 
 /*
- * This class was written by Ryan Tannenberg and Daniel Ritchie for the 2017 FIRST Robotics Competition.
  * This class contains methods to invert the motors, drive, and switch between tank and arcade drive 
  * for the teleop portion of the competition. It also contains methods to drive a certain distance and
  * turn to a certain degree for the automated section of the competition.
